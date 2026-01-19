@@ -1,18 +1,25 @@
-## Getting Started
+# Grocery_Bill_Calculator
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+A simple Java console application that is designed to help users calculate their total monthly grocery expenses and average weekly spending, both with and without the application of a discount coupon.
 
-## Folder Structure
+# Features:
 
-The workspace contains two folders by default, where:
+Calculates the total monthly grocery bill from four weekly inputs.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+Calculates the average weekly spending.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+Applies a user-defined coupon amount (in percentage).
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+Will include a default 10% coupon if the input is invalid.
 
-## Dependency Management
+Formats output as US currency for clarity.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+# Technologies Used:
+
+Language: Java
+
+Libraries: java.util.Scanner,
+
+java.text.NumberFormat,
+
+and java.util.Locale.
