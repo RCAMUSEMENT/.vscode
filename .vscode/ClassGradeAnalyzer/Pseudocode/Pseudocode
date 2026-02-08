@@ -1,0 +1,94 @@
+BEGIN
+    // INITIALIZATION
+    DECLARE numGrades AS INTEGER = 10
+    DECLARE grades[numGrades] AS ARRAY OF DOUBLE
+    DECLARE sum AS DOUBLE = 0.0
+    DECLARE distributionMap AS ORDERED_MAP // Represents LinkedHashMap
+    
+    // Initialize the map to ensure "A" through "F" order and default counts
+    INITIALIZE distributionMap with keys: "A", "A-", "B+", "B", "B-", "C+", "C", "D", "F"
+    SET all values in distributionMap to 0
+    INITIALIZE decimalFormat as "0.00"
+
+    DISPLAY "--- Welcome to Ryley's Grade Statistics Calculator ---"
+    DISPLAY "Please enter ten floating-point grades ranging from (0-100) for each student:"
+
+    // INPUT PHASE (with InputMismatch Handling)
+    FOR i FROM 0 TO numGrades - 1
+        WHILE TRUE
+            TRY
+                DISPLAY "Enter grade #" + (i + 1) + ": "
+                READ input
+                IF input < 0 OR input > 100 THEN
+                    DISPLAY "! The grade is out of range. Please enter 0-100."
+                    CONTINUE WHILE
+                END IF
+                
+                grades[i] = input
+                sum = sum + input
+                BREAK WHILE // Successfully read, exit validation loop
+            CATCH inputMismatch
+                DISPLAY "! This is an invalid input. Please enter a number ranging from 0 to 100."
+                CLEAR scanner buffer // Prevents endless loop (scanner.next())
+            END TRY
+        END WHILE
+    END FOR
+
+    // CALCULATION PHASE
+    average = sum / numGrades
+    varianceSum = 0.0
+    FOR EACH grade IN grades
+        varianceSum = varianceSum + POWER(grade - average, 2)
+    END FOR
+    stdDev = SQUARE_ROOT(varianceSum / numGrades)
+
+    // SORTING PHASE (Descending)
+    SORT grades in ascending order
+    REVERSE grades using manual swap loop (Highest to Lowest)
+
+    // INDIVIDUAL REPORT & DISTRIBUTION COUNTING
+    DISPLAY "\n--- Individual Grade Report (Sorted) ---"
+    FOR EACH grade IN grades
+        letter = CALL getLetterGrade(grade)
+        DISPLAY FORMAT(grade) + "% [" + letter + "]"
+        INCREMENT distributionMap[letter] BY 1
+    END FOR
+
+    // FINAL STATISTICS
+    DISPLAY "\n--- Final Class Grade Statistics ---"
+    DISPLAY "The Average grade for the class is: " + FORMAT(average) + "% (" + CALL getLetterGrade(average) + ")"
+    DISPLAY "The Maximum grade for the class is: " + FORMAT(grades[0]) + "% (" + CALL getLetterGrade(grades[0]) + ")"
+    DISPLAY "The Minimum grade for the class is: " + FORMAT(grades[numGrades - 1]) + "% (" + CALL getLetterGrade(grades[numGrades - 1]) + ")"
+    DISPLAY "The Standard deviation for the class is: " + FORMAT(stdDev)
+
+    // VISUAL BAR CHART
+    DISPLAY "\n--- Grade Distribution (Bar Chart) ---"
+    CALL printBarChart(distributionMap)
+    DISPLAY "----------------------------"
+END
+
+// HELPER FUNCTION: Letter Grade Logic
+FUNCTION getLetterGrade(score)
+    IF score >= 95.0 THEN RETURN "A"
+    ELSE IF score >= 90.0 THEN RETURN "A-"
+    ELSE IF score >= 86.7 THEN RETURN "B+"
+    ELSE IF score >= 83.3 THEN RETURN "B"
+    ELSE IF score >= 80.0 THEN RETURN "B-"
+    ELSE IF score >= 75.0 THEN RETURN "C+"
+    ELSE IF score >= 70.0 THEN RETURN "C"
+    ELSE IF score >= 60.0 THEN RETURN "D"
+    ELSE RETURN "F"
+END FUNCTION
+
+// HELPER FUNCTION: Visual Chart Logic
+FUNCTION printBarChart(distribution)
+    FOR EACH entry IN distribution
+        // Display key with padding (Representing %-3s formatting)
+        DISPLAY LEFT_JUSTIFY(entry.key, 3) + " [" + entry.value + "]: "
+        FOR j FROM 1 TO entry.value
+            PRINT "*"
+        END FOR
+        PRINT NEWLINE
+    END FOR
+END FUNCTION
+
