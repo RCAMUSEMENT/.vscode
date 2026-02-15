@@ -40,7 +40,8 @@ public class LincolnCountyTemp {
     }
 
     /**
-     * Searches for month or suggests the closest match if not found by reasonable typo (up to 2 edits away) and prints the temperature for that month if found
+     * Searches for month or suggests the closest match if not found by reasonable typo (up to 2 edits away)
+     *  and prints the temperature for that month if found
      */
     public static void handleMonthlyInput(String[] months, double[] temps, String target) {
         int bestMatchIndex = -1;
@@ -67,7 +68,8 @@ public class LincolnCountyTemp {
     }
 
     /**
-     * Calculates Levenshtein distance for typo matching between user input and month names reasonably close to the input (up to 2 edits away)
+     * Calculates Levenshtein distance for typo matching between user input and
+     * month names reasonably close to the input (up to 2 edits away)
      */
     private static int calculateDistance(String s1, String s2) {
         int[][] dp = new int[s1.length() + 1][s2.length() + 1];
