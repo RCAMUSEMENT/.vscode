@@ -1,6 +1,6 @@
 /**
  * Student Name: Ryley Carlson
- * CSC320 Module 5 Critical Thinking - Option 2
+ * CSC320 Module 5 Critical Thinking Assignment 4 - Option 2
  * Program: Lincoln County Temperature System
  * Description: Utilizes parallel arrays to store and retrieve monthly temperature data.
  * Includes a fuzzy-search algorithm to handle user typos and provides a
