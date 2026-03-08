@@ -171,7 +171,7 @@ public class HomeInventory {
         String response = scanner.nextLine().trim().toUpperCase();
 
         if (response.equals("Y")) {
-            printToFile("C:\\Temp\\Home.txt");
+            printToFile("Home.txt");
         } else {
             System.out.println("File output skipped. Program will continue without printing to file.");
         }
