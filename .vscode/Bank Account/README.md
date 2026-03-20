@@ -1,6 +1,6 @@
 # 🏦 Banking System - CSC372 Module 1 💰
 
-Welcome to the **Bank Account Management System**! This project was developed as part of the **CSC372 Module 1 Critical Thinking Assignment**. It demonstrates the power of **Object-Oriented Programming (OOP)** in Java.
+Welcome to Ryley's **Bank Account Management System**! This project was created for the **CSC372 Module 1 Critical Thinking Assignment At CSU Global**! Demonstrating the power of **Object-Oriented Programming (OOP)** in Java.
 
 ---
 
