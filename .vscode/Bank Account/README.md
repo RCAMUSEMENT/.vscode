@@ -1,18 +1,46 @@
-## Getting Started
+# 🏦 Banking System - CSC372 Module 1 💰
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Welcome to the **Bank Account Management System**! This project was developed as part of the **CSC372 Module 1 Critical Thinking Assignment**. It demonstrates the power of **Object-Oriented Programming (OOP)** in Java.
 
-## Folder Structure
+---
 
-The workspace contains two folders by default, where:
+## 👤 Student Information
+*   **Name:** Ryley Carlson
+*   **Assignment:** CSC372 Module 1 Critical Thinking
+*   **Date:** 2026-03-20
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+---
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## 🛠️ Project Structure
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+1.  **`BankAccount.java` (The Superclass) 🏗️**
+    *   Defines the core blueprint for a bank account (Part 1).
+    *   Handles names, ID, and balance logic.
 
-## Dependency Management
+2.  **`CheckingAccount.java` (The Subclass) 💳**
+    *   Inherits from BankAccount (Part 2).
+    *   **Overdraft Protection:** Automatically applies a **$30.00 fee** if balance is negative.
+    *   Handles interest rate attributes and processing.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+3.  **`BankAccountTest.java` (The Driver) 🏁**
+    *   The entry point featuring an interactive menu.
+    *   Includes **Input Verifiers** to ensure valid data entry.
+
+---
+
+## ✨ Features
+*   ✅ **Encapsulation:** Private attributes with controlled access.
+*   ✅ **Inheritance:** CheckingAccount extends BankAccount.
+*   ✅ **Validation:** Input verifiers prevent program crashes.
+*   ✅ **Interaction:** Menu-driven interface with "continue" prompts.
+
+---
+
+## 🚀 How to Run
+
+1.  Compile all files: `javac *.java`
+2.  Run the test class: `java BankAccountTest`
+
+---
+**Made by Ryley Carlson**
+
