@@ -3,10 +3,6 @@
  * CSC372 Module 3 Discussion 3
  * Date: 2026-04-01
  * Program: PepsiMachine.java
- * Description: This program creates a simple GUI for a Pepsi vending machine using Java Swing.
- *  It features three buttons for different Pepsi options: "Pepsi", "Diet Pepsi", and "Wild Cherry".
- *  The layout of the buttons is managed using a FlowLayout, which centers the buttons and provides spacing between them.
- *  The GUI is displayed in a window with the title " Ryley's Pepsi Vending Interface".
  */
 
 import java.awt.*;
