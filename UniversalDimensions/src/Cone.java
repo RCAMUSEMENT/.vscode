@@ -29,7 +29,7 @@ public class Cone extends Shape {
 
     @Override
     public String toString() {
-        return String.format("Object: Gnome's Pointy Hat | Base Radius: %.2f cm | Height: %.2f cm\nSurface Area: %.2f sq cm | Volume: %.2f cubic cm", 
+        return String.format("Object: Gnomeo's Pointy Hat | Base Radius: %.2f cm | Height: %.2f cm\nSurface Area: %.2f sq cm | Volume: %.2f cubic cm",
                                 radius, height, surface_area(), volume());
     }
 }
