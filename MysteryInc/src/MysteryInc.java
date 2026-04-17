@@ -19,7 +19,7 @@ public class MysteryInc {
     public static void searchForSnacks(int boxCount) {
         // The Base Case: We found the bottom of the stack!
         if (boxCount == 0) {
-            System.out.println("Ruh-roh! No more boxes. But wait... there's the snack! Mmm, delicious Scooby Snacks! Ruhehehee! We found them!");
+            System.out.println("Ruh-roh! No more boxes. But wait... there they are, our Scooby Snacks! Mmm, delicious! Ruhehehee! We found them!");
         }
         // The Recursive Step: Open a box and move to the next one
         else {
