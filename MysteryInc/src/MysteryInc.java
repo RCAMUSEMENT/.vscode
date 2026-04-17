@@ -3,7 +3,7 @@
  * CSC372 Module 5 Initial Discussion Post
  * Date: 2026-04-16
  * Program: MysteryInc.java
- * Description: A recursive solution to find snacks in a stack of boxes.
+ * Description: A recursive solution to find Scooby Snacks in a stack of boxes.
  */
 
 public class MysteryInc {
