@@ -1,43 +1,59 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * Ryley's Scooby-Snack-Sized Product Search
+ * Ryley's Mystery Inc. Product Search - The Spooky Calculation
  * Student Name: Ryley Carlson
- * Description: A recursive solution to find the product of five numbers, Scooby-style!
+ * CSC372 Module 5 Discussion
+ * Date: 2026-04-18
+ * Program: MysteryInc.java
+ * Description: Using the power of recursion to multiply snacks before the ghost catches us!
  */
 public class MysteryInc {
     public static void main(String[] args) {
-        try (Scanner input = new Scanner(System.in)) {
-            System.out.println("Scooby and Shaggy are hungry! Enter 5 numbers to find the total snack power:");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("--- The Mystery of the Zero-Sum Snack ---");
 
-            // Start the recursion with 5 boxes/numbers
-            double finalSnackPower = findSnackPower(input, 5);
-
-            System.out.println("\nZoinks! The final snack power is: " + finalSnackPower);
-            System.out.println("Ruhehehee! That's a lot of Scooby Snacks!");
+        try {
+            // Shaggy: "Like, let's start digging through these 5 boxes, Scoob!"
+            double finalProduct = calculateProduct(5, sc);
+            System.out.println("\nCase Closed! The total product is: " + finalProduct);
+        } catch (Exception e) {
+            // Velma: "My glasses! I can't see a thing without my glasses... or my code!"
+            System.out.println("Ruh-roh! A monster interfered with the calculation.");
+        } finally {
+            sc.close();
         }
     }
 
     /**
-     * Recursive method to gather numbers and multiply them
+     * Recursive method: Each call is like opening another creepy door in a hallway.
      */
-    public static double findSnackPower(Scanner input, int boxesLeft) {
-        // The Base Case: We've opened all 5 boxes!
-        // We return 1 because multiplying by 1 won't change the previous results.
-        if (boxesLeft == 0) {
-            System.out.println("\n[Ruh-roh! No more boxes left to open!]");
-            return 1;
+    public static double calculateProduct(int count, Scanner sc) {
+        // 1. THE BASE CASE:
+        if (count == 0) {
+            System.out.println("\n[All boxes checked! No monsters here! High five, Scooby!]");
+            return 1.0;
         }
 
-        // The Recursive Step: Open a box, get a number, and keep searching
-        else {
-            System.out.print("Opening box " + boxesLeft + "... Enter a number for this snack: ");
-            double snackValue = input.nextDouble();
+        try {
+            System.out.print("Enter snack value for box #" + count + ": ");
+            double currentNum = sc.nextDouble();
 
-            System.out.println("  'Like, wow, Scoob! This box has a value of " + snackValue + "!'");
+            // 2. THE EARLY EXIT (Short-Circuit):
+            if (currentNum == 0) {
+                System.out.println("Zoinks! A zero?! Like, that's an empty box, Scoob! If we multiply by zero, the whole snack hoard disappears! Let's get out of here!"); 
+                return 0.0;
+            }
 
-            // We multiply the current snackValue by the result of the next recursive call
-            return snackValue * findSnackPower(input, boxesLeft - 1);
+            // 3. THE RECURSIVE STEP:
+            return currentNum * calculateProduct(count - 1, sc);
+
+        } catch (InputMismatchException e) {
+            // Daphne: "Jeepers! That's not a number, that's a red herring!"
+            System.out.println("That's not a number! Try again, Shaggy.");
+            sc.next(); // Clear the ghost from the buffer
+            return calculateProduct(count, sc); // "Let's try that box one more time!"
         }
     }
 }
