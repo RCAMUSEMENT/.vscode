@@ -13,6 +13,7 @@ public class MysteryInc {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+
         System.out.println("===========================================");
         System.out.println("--- THE MYSTERY OF THE ZERO-SUM SNACK ---");
         System.out.println("===========================================");
@@ -90,3 +91,4 @@ public class MysteryInc {
         return sc.nextInt();
     }
 }
+
