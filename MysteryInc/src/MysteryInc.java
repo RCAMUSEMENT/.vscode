@@ -11,8 +11,8 @@
  * This application emphasizes mathematical recursion and thematic storytelling to fulfill module requirements.
  */
 import java.util.InputMismatchException;
-import java.util.Scanner;
 import java.util.Random;
+import java.util.Scanner;
 
 public class MysteryInc {
     private static int totalBoxes;
@@ -76,6 +76,7 @@ public class MysteryInc {
 
     /**
      * Recursive method: Finding boxes and avoiding the ghost.
+     * Abides by assignment: provides the product of 5 numbers using recursion.
      */
     public static double calculateProduct(int count, Scanner sc) {
         // BASE CASE: All 5 boxes checked
