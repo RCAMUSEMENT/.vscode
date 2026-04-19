@@ -76,7 +76,6 @@ public class MysteryInc {
 
     /**
      * Recursive method: Finding boxes and avoiding the ghost.
-     * Abides by assignment: provides the product of 5 numbers using recursion.
      */
     public static double calculateProduct(int count, Scanner sc) {
         // BASE CASE: All 5 boxes checked
