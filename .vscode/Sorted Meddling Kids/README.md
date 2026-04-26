@@ -1,20 +1,17 @@
 # 🔎 CASE FILE: Sorted Meddling Kids
+**Student:** Ryley Carlson
+**Course:** CSC372 | Module 5 Critical Thinking Assignment
+**Date:** April 26, 2026
 
 Welcome to the **Coolsville High Registrar**. This project was created to track and organize the students of Coolsville High—especially those pesky meddling kids who keep solving mysteries around town.
 
 ## 📝 The Mystery Overview
-This Java application manages a registry of 10 students. To keep things orderly at the school office, we’ve implemented a custom **Ghostly Selection Sort** that can reorganize the student list by their names or their official roll numbers.
-
-### 🛠 The Tech Specs
-* **Language:** Java
-* **Data Structure:** `ArrayList<MeddlingKid>`
-* **Algorithm:** Custom Selection Sort (No `Collections.sort` allowed!)
-* **Sorting Rules:** Two custom `Comparator` classes for multi-criteria sorting.
+This Java application manages a registry of 10 total students. To keep things orderly at the school office, I have implemented a custom **Ghostly Selection Sort** that can reorganize the student list by their names or their official roll numbers.
 
 ---
 
 ## 📁 The Clue Files
-To keep the mystery organized, the project is broken down into separate Java source files:
+To keep the mystery organized, the project is broken down into three separate Java source files:
 
 1. **`MeddlingKid.java`**: The "Suspect Profile." Stores the `rollno`, `name`, and `address`.
 2. **`ClueComparators.java`**: The "Detective Rules." Contains the logic for comparing students.
@@ -36,5 +33,6 @@ To keep the mystery organized, the project is broken down into separate Java sou
 
 ---
 
-
 > "I would have gotten away with an unsorted list, too, if it weren't for you meddling kids and your blasted dogs!"
+
+**Developed as part of the CSC372 Module 6 Critical Thinking Assignment.**
