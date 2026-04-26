@@ -23,21 +23,21 @@ public class CoolsvilleRegistrar {
         try (Scanner sc = new Scanner(System.in)) {
             ArrayList<MeddlingKid> mysteryGang = new ArrayList<>();
 
-            mysteryGang.add(new MeddlingKid(105, "Fred", "Mystery Machine"));
-            mysteryGang.add(new MeddlingKid(102, "Daphne", "Fashion Way"));
-            mysteryGang.add(new MeddlingKid(108, "Velma", "Library Ave"));
-            mysteryGang.add(new MeddlingKid(101, "Shaggy", "Snack Street"));
-            mysteryGang.add(new MeddlingKid(110, "Scooby", "Snack Street"));
+            mysteryGang.add(new MeddlingKid(105, "Fred Jones", "Mystery Machine"));
+            mysteryGang.add(new MeddlingKid(102, "Daphne Blake", "Fashion Way"));
+            mysteryGang.add(new MeddlingKid(108, "Velma Dinkley", "Library Ave"));
+            mysteryGang.add(new MeddlingKid(101, "Shaggy Rogers", "Scooby-Snack Street"));
+            mysteryGang.add(new MeddlingKid(110, "Scooby Doo", "Scooby-Snack Street"));
             mysteryGang.add(new MeddlingKid(104, "Red Herring", "Bully Lane"));
-            mysteryGang.add(new MeddlingKid(103, "Scrappy", "Puppy Ct"));
-            mysteryGang.add(new MeddlingKid(107, "Flim Flam", "Magic Cir"));
-            mysteryGang.add(new MeddlingKid(109, "Vincent", "Spooky Rd"));
-            mysteryGang.add(new MeddlingKid(106, "Crystal", "Alien Ave"));
+            mysteryGang.add(new MeddlingKid(103, "Scrappy Doo", "Puppy Ct"));
+            mysteryGang.add(new MeddlingKid(107, "Thorn McKnight", "Hex Girl Cir"));
+            mysteryGang.add(new MeddlingKid(109, "Dusk St. James", "Hex Girl Cir"));
+            mysteryGang.add(new MeddlingKid(106, "Luna Moss", "Hex Girl Cir"));
 
             boolean unmasking = true;
             while (unmasking) {
                 System.out.println("\n--- Coolsville High Registrar ---");
-                System.out.println("1. Unmask All Meddling Kids (View)");
+                System.out.println("1. Unmask All Meddling Kids And Those Blasted Dogs (View)");
                 System.out.println("2. Sort by Name");
                 System.out.println("3. Sort by Roll Number");
                 System.out.println("4. Close Case (Exit)");
