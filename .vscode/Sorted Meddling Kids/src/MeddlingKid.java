@@ -1,3 +1,13 @@
+/**
+ * Ryley's Sorted Meddling Kids
+ * Student Name: Ryley Carlson
+ * CSC372 Module 6 Critical Thinking Assignment
+ * Date: 2026-04-26
+ * Program: Sorted Meddling Kids.java
+ * Description: A Java program that manages a list of "Meddling Kids" (characters from the Scooby-Doo franchise)
+ * and allows the user to sort them by name or roll number using custom comparators and a selection sort algorithm.
+ */
+
 public class MeddlingKid {
     @SuppressWarnings("FieldMayBeFinal")
     private int rollno;
