@@ -1,0 +1,34 @@
+================================================================================PSEUDOCODE: POPEYE'S NAUTICAL MULTISET CARGO HOLD (BAG CLASS)================================================================================
+CLASS Bag<T>
+    PRIVATE elementsHold AS ArrayList of T
+
+    CONSTRUCTOR Bag()
+        Initialize elementsHold as an empty ArrayList
+    END CONSTRUCTOR
+
+    METHOD add(item: T)
+        Append item to elementsHold
+    END METHOD
+
+    METHOD remove(item: T)
+        Remove first matching occurrence of item from elementsHold
+    END METHOD
+
+    METHOD contains(item: T) RETURNS Boolean
+        IF item exists inside elementsHold THEN
+            RETURN True
+        ELSE
+            RETURN False
+        END IF
+    END METHOD
+
+    METHOD count(item: T) RETURNS Integer
+        SET continuousTally TO 0
+        FOR EACH checkedEntry IN elementsHold DO
+            IF checkedEntry matches item THEN
+                INCREMENT continuousTally BY 1
+            END IF
+        END FOR
+        RETURN continuousTally
+    END METHOD
+END CLASS
