@@ -41,6 +41,6 @@ java com.sweethaven.Main
 
 ---
 
-> "Knowledge and provisions are the strongest gear a sailor can carry. Keep your hold structured and your spinach stacked high!" 
+> "Knowledge and provisions are the strongest gear a sailor can carry. Keep your hold structured and your spinach stacked high!"
 >
 > **Developed as part of the CSC400 Module 1 Critical Thinking Assignment.**
