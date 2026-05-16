@@ -1,3 +1,14 @@
+/**
+ * Popeye's Nautical Multiset Cargo Hold
+ * Student Name: Ryley Carlson
+ * Course: CSC400 Module 1 Critical Thinking Assignment
+ * Date: 2026-05-17
+ * Program: Main.java
+ * Description: An orchestration program that demonstrates a generic Bag (multiset)
+ * data structure container. The application verifies adding, removing, containing,
+ * and occurrence counting operations using a Popeye the Sailor Man theme.
+ */
+
 package com.sweethaven;
 
 import com.sweethaven.collection.Bag;

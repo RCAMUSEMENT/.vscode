@@ -1,3 +1,14 @@
+/**
+ * Popeye's Nautical Multiset Cargo Hold
+ * Student Name: Ryley Carlson
+ * Course: CSC400 Module 1 Critical Thinking Assignment
+ * Date: 2026-05-17
+ * Program: Bag.java
+ * Description: Core generic Bag data structure class implementing a multiset.
+ * Allows duplicate item tracking without enforcing an order, utilizing an internal
+ * ArrayList structure with added null-safe counting logic checkpoints.
+ */
+
 package com.sweethaven.collection;
 
 import java.util.ArrayList;
