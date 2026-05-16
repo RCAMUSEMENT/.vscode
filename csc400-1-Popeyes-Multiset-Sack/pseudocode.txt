@@ -1,6 +1,9 @@
 // ============================================================================
-// MODULE: Popeye's Nautical Multiset Cargo Hold (Bag Class Implementation)
+// MODULE 1 CT Assignment: Popeye's Nautical Multiset Cargo Hold (Bag Class Implementation)
+// Student: Ryley Carlson | Course: CSC400 Data Structures and Algorithms
+// Due Date: May 17, 2026
 // ============================================================================
+
 CLASS Bag<T>
     PRIVATE elementsHold AS ArrayList of T
 
