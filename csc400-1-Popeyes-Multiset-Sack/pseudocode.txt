@@ -1,4 +1,6 @@
-================================================================================PSEUDOCODE: POPEYE'S NAUTICAL MULTISET CARGO HOLD (BAG CLASS)================================================================================
+// ============================================================================
+// MODULE: Popeye's Nautical Multiset Cargo Hold (Bag Class Implementation)
+// ============================================================================
 CLASS Bag<T>
     PRIVATE elementsHold AS ArrayList of T
 
