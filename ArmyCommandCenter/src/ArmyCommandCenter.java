@@ -30,7 +30,7 @@ public class ArmyCommandCenter extends JFrame {
         setTitle("Ryley's U.S. ARMY: STRATEGIC OPERATIONS COMMAND");
         setSize(650, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         // --- PERSISTENT CAMOUFLAGE HUE FOR THE SESSION ---
         Random rand = new Random();
         float greenHue = 0.25f + rand.nextFloat() * (0.45f - 0.25f);
@@ -51,7 +51,7 @@ public class ArmyCommandCenter extends JFrame {
         statusLog.setBackground(new Color(20, 20, 20));
         statusLog.setForeground(Color.GREEN);
         statusLog.setFont(new Font("Monospaced", Font.BOLD, 13));
-        
+
         mainPanel.add(new JScrollPane(statusLog), BorderLayout.CENTER);
 
         setJMenuBar(createMilitaryMenu());
