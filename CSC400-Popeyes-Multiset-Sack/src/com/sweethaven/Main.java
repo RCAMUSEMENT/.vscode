@@ -74,35 +74,35 @@ public class Main {
         System.out.println("===============================================================");
 
         // Assignment Requirement: Create two instances of the bag class
-        System.out.println("\n[ASSIGNMENT 2] Commissioning a second vessel cargo hold (Olive Oyl's Hold)...");
+        System.out.println("\n[CRITICAL THINKING ASSIGNMENT 2] Commissioning a second vessel cargo hold (Olive Oyl's Hold)...");
         Bag<String> oliveOylHold = new Bag<>();
 
         // Assignment Requirement: Add elements to each bag, including duplicates
-        System.out.println("\n[ASSIGNMENT 2] Loading separate unique provisions into Olive Oyl's hold...");
+        System.out.println("\n[CRITICAL THINKING ASSIGNMENT 2] Loading separate unique provisions into Olive Oyl's hold...");
         oliveOylHold.add("Pipe Tobacco"); // Duplicate matching sweetHavenStorage
         oliveOylHold.add("Anchor");
         oliveOylHold.add("Sea Biscuit");
         oliveOylHold.add("Anchor"); // Internal duplicate
 
         // Assignment Requirement: Print the size of each bag using the size method
-        System.out.println("\n[ASSIGNMENT 2] Verifying total cargo unit counts via size() method...");
+        System.out.println("\n[CRITICAL THINKING ASSIGNMENT 2] Verifying total cargo unit counts via size() method...");
         System.out.println(">>> Popeye's Sweet Haven Hold Size: " + sweetHavenStorage.size());
         System.out.println(">>> Olive Oyl's Hold Size: " + oliveOylHold.size());
 
         // Assignment Requirement: Merge the two bags together using the merge method
-        System.out.println("\n[ASSIGNMENT 2] Transferring all elements from Olive Oyl's hold into Popeye's hold...");
+        System.out.println("\n[CRITICAL THINKING ASSIGNMENT 2] Transferring all elements from Olive Oyl's hold into Popeye's hold...");
         sweetHavenStorage.merge(oliveOylHold);
 
         // Assignment Requirement: Print the merged bag contents
-        System.out.println("\n[ASSIGNMENT 2] Outputting combined fleet hold layout post-merge:");
+        System.out.println("\n[CRITICAL THINKING ASSIGNMENT 2] Outputting combined fleet hold layout post-merge:");
         System.out.println(">>> Combined Manifest: " + sweetHavenStorage);
 
         // Assignment Requirement: Create a new bag containing only the distinct elements
-        System.out.println("\n[ASSIGNMENT 2] Isolating singular unique items using distinct() method...");
+        System.out.println("\n[CRITICAL THINKING ASSIGNMENT 2] Isolating singular unique items using distinct() method...");
         Bag<String> distinctCatalog = sweetHavenStorage.distinct();
 
         // Assignment Requirement: Print the distinct bag contents
-        System.out.println("\n[ASSIGNMENT 2] Outputting final distinct catalog blueprint profile:");
+        System.out.println("\n[CRITICAL THINKING ASSIGNMENT 2] Outputting final distinct catalog blueprint profile:");
         System.out.println(">>> Distinct Manifest Catalog: " + distinctCatalog);
 
         System.out.println("\n THE PROCESS ARCHITECTURE HAS BEEN EXECUTED SUCCESSFULLY. WELL WISHES TO SWEETHAVEN!");
