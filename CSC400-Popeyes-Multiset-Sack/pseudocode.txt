@@ -1,7 +1,7 @@
 // ============================================================================
-// MODULE 1 CT Assignment: Popeye's Nautical Multiset Cargo Hold (Bag Class Implementation)
+// MODULE 2 CT Assignment: Popeye's Nautical Multiset Cargo Hold (Bag Class Extension)
 // Student: Ryley Carlson | Course: CSC400 Data Structures and Algorithms
-// Due Date: May 17, 2026
+// Due Date: May 24, 2026
 // ============================================================================
 
 CLASS Bag<T>
@@ -36,4 +36,29 @@ CLASS Bag<T>
         END FOR
         RETURN continuousTally
     END METHOD
+
+    // =========================================================================
+    // NEW ADDITIONS FOR CRITICAL THINKING ASSIGNMENT WEEK 2
+    // =========================================================================
+
+    METHOD size() RETURNS Integer
+        RETURN count of elements inside elementsHold
+    END METHOD
+
+    METHOD merge(otherBag: Bag<T>)
+        IF otherBag IS NOT NULL THEN
+            Append all elements from otherBag.elementsHold to elementsHold
+        END IF
+    END METHOD
+
+    METHOD distinct() RETURNS Bag<T>
+        Initialize distinctBag as a New Bag
+        FOR EACH checkedEntry IN elementsHold DO
+            IF distinctBag.contains(checkedEntry) IS False THEN
+                distinctBag.add(checkedEntry)
+            END IF
+        END FOR
+        RETURN distinctBag
+    END METHOD
+
 END CLASS

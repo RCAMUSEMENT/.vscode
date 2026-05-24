@@ -1,14 +1,14 @@
 /**
  * Popeye's Nautical Multiset Cargo Hold
  * Student Name: Ryley Carlson
- * Course: CSC400 Module 1 Critical Thinking Assignment
- * Date: 2026-05-17
+ * Course: CSC400 Module 2 Critical Thinking Assignment
+ * Date: 2026-05-24
  * Program: Bag.java
  * Description: Core generic Bag data structure class implementing a multiset.
  * Allows duplicate item tracking without enforcing an order, utilizing an internal
  * ArrayList structure with added null-safe counting logic checkpoints.
+ * Extended to calculate cargo size, merge holds, and extract distinct cargo.
  */
-
 package com.sweethaven.collection;
 
 import java.util.ArrayList;
@@ -16,9 +16,12 @@ import java.util.ArrayList;
 /**
  * Requirement #1: I have designed a Java class called `Bag` that implements the bag data structure.
  * Requirement #4: I have added comments to explain the functionality of each of the methods.
- *
+ * Requirement #5 (Additional Requirements): I have implemented the `size()`, `merge(Bag<T> otherBag)`,
+ * and `distinct()` methods as specified in week's 2 Critical Thinking assignment.
  * Theme Context: This structure simulates Popeye's duffle bag (multiset),
  * where it allows duplicate elements like extra canned spinach or pipe tobacco.
+ * The `Bag` class provides methods to add, remove, check for containment, count occurrences,
+ * calculate total size, merge with another bag, and filter for distinct items.
  */
 public class Bag<T> {
     // Internal array list to hold Popeye's cargo elements
@@ -61,6 +64,52 @@ public class Bag<T> {
             }
         }
         return continuousTally;
+    }
+
+    /**
+     * // =========================================================================
+     * // NEW ADDITIONS FOR CRITICAL THINKING ASSIGNMENT WEEK 2: int size() Method
+     * // =========================================================================
+     * Requirement #5.1: Implement the `size()` method to return the total number of elements in the bag, including duplicates.
+     * This method returns the total number of elements in the bag, including duplicates.
+     * Tally up every single piece of crate sitting on the deck.
+     * Returns 0 if the bag is empty.
+     */
+    public int size() {
+        return elementsHold.size();
+    }
+
+    /**
+     * // =========================================================================
+     * // NEW ADDITIONS FOR CRITICAL THINKING ASSIGNMENT WEEK 2: void merge(Bag<T> otherBag) Method
+     * // =========================================================================
+     * Requirement #5.2: Implement the `merge(Bag<T> otherBag)` method to merge the elements of another bag into the current bag.
+     * This method merges the elements of otherBag into the current bag.
+     * Combines Olive Oyl's cargo directly onto Popeye's main vessel deck.
+     * Requires a non-null otherBag to merge. If null is passed, the method does nothing.
+     */
+    public void merge(Bag<T> otherBag) {
+        if (otherBag != null) {
+            this.elementsHold.addAll(otherBag.elementsHold);
+        }
+    }
+
+    /**
+     * // =========================================================================
+     * // NEW ADDITIONS FOR CRITICAL THINKING ASSIGNMENT WEEK 2: Bag<T> distinct() Method
+     * // =========================================================================
+     * Requirement #5.3: Implement the `distinct()` method to return a new bag that contains only the distinct elements from the current bag.
+     * This method returns a new bag that contains only the distinct elements from the current bag.
+     * Discards manifest duplicates to reveal one of every unique item found onboard.
+     */
+    public Bag<T> distinct() {
+        Bag<T> distinctBag = new Bag<>();
+        for (T checkedEntry : this.elementsHold) {
+            if (!distinctBag.contains(checkedEntry)) {
+                distinctBag.add(checkedEntry);
+            }
+        }
+        return distinctBag;
     }
 
     /**
