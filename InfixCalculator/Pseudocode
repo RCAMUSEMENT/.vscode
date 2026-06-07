@@ -1,0 +1,175 @@
+================================================================================
+RYLEY'S COMIC BOOK MANIFEST INFIX ENGINE PSEUDOCODE
+================================================================================
+
+START FUNCTION evaluateInfix(sheldoncooperExpression)
+    // Kill execution if data input is empty
+    IF sheldoncooperExpression is blank OR empty THEN
+        THROW "Error: Invalid infix expression"
+    ENDIF
+
+    Set cleanLot = trimmed spaces from sheldoncooperExpression
+
+    // Postfix branch router: bypass normal shunting if syntax matches postfix
+    IF call isPostfixExpression(cleanLot) THEN
+        RETURN call processPostfixExpression(cleanLot)
+    ENDIF
+
+    Strip out remaining whitespace gaps from cleanLot
+
+    // Filter out unparenthesized operations to block ambiguity errors
+    IF cleanLot lacks brackets AND has more than 1 operator THEN
+        THROW "Error: Invalid infix expression"
+    ENDIF
+
+    Initialize issueCountStack AS Stack to store my numbers
+    Initialize modifierStack AS Stack to store my operators
+    Set cursor = 0
+
+    WHILE cursor < total length of cleanLot DO
+        Set currentToken = character at cleanLot[cursor]
+
+        // Gathers digits into a string buffer so numbers like #145 stay whole
+        IF currentToken is a number THEN
+            Set digitBuffer = empty string
+            WHILE cursor < length AND character is still a digit DO
+                Add character onto digitBuffer
+                Move cursor forward by 1
+            ENDWHILE
+            Parse digitBuffer into an integer and push onto issueCountStack
+            CONTINUE to next loop iteration (do not increment cursor again)
+            
+        ELSE IF currentToken is '(' THEN
+            Push currentToken onto modifierStack
+            
+        // Hit closed paren, evaluate the immediate sub-bundle nested inside
+        ELSE IF currentToken is ')' THEN
+            WHILE modifierStack has items AND the top item is not '(' DO
+                IF issueCountStack size < 2 THEN
+                    THROW "Error: Invalid infix expression"
+                ENDIF
+                Pop rightOperand from issueCountStack
+                Pop leftOperand from issueCountStack
+                Pop modifier from modifierStack
+                Set result = call applyValuation(modifier, rightOperand, leftOperand)
+                Push result onto issueCountStack
+            ENDWHILE
+            
+            IF modifierStack is empty THEN
+                THROW "Error: Invalid infix expression"
+            ENDIF
+            Pop and drop the '(' from modifierStack
+            
+        // Sort operators (+/- vs */%)
+        ELSE IF call isCollectionModifier(currentToken) THEN
+            WHILE modifierStack has items AND call getModifierWeight(currentToken) <= call getModifierWeight(top of modifierStack) DO
+                IF issueCountStack size < 2 THEN
+                    THROW "Error: Invalid infix expression"
+                ENDIF
+                Pop rightOperand from issueCountStack
+                Pop leftOperand from issueCountStack
+                Pop modifier from modifierStack
+                Set result = call applyValuation(modifier, rightOperand, leftOperand)
+                Push result onto issueCountStack
+            ENDWHILE
+            Push currentToken onto modifierStack
+            
+        ELSE
+            THROW "Error: Invalid infix expression"
+        ENDIF
+        
+        // Increment loop counter for non-digit characters
+        Move cursor forward by 1
+    ENDWHILE
+
+    // Clean out any leftover backlog operations sitting in the stacks
+    WHILE modifierStack still has items DO
+        Pop remainingModifier from modifierStack
+        IF remainingModifier is '(' OR issueCountStack size < 2 THEN
+            THROW "Error: Invalid infix expression"
+        ENDIF
+        Pop rightOperand from issueCountStack
+        Pop leftOperand from issueCountStack
+        Set result = call applyValuation(remainingModifier, rightOperand, leftOperand)
+        Push result onto issueCountStack
+    ENDWHILE
+
+    IF issueCountStack size is not 1 THEN
+        THROW "Error: Invalid infix expression"
+    ENDIF
+
+    RETURN the final remaining value standing on issueCountStack
+END FUNCTION
+
+
+// Postfix pattern validation checker
+START FUNCTION isPostfixExpression(expr)
+    IF expr contains '(' OR contains ')' THEN RETURN false
+    IF expr is empty THEN RETURN false
+    Set lastChar = last character of expr
+    RETURN call isCollectionModifier(lastChar)
+END FUNCTION
+
+
+// Secondary processing track built specifically to parse valid postfix strings
+START FUNCTION processPostfixExpression(postfixExpr)
+    Initialize countStack AS Stack of integers
+    Split postfixExpr by spaces into an array of string segments
+    
+    FOR EACH segment in string segments DO
+        IF segment is empty THEN
+            CONTINUE loop
+        ENDIF
+        
+        IF first character of segment is a number THEN
+            Convert segment to integer and push onto countStack
+        ELSE IF segment length is 1 AND character is an operator THEN
+            IF countStack size < 2 THEN
+                THROW "Error: Invalid infix expression"
+            ENDIF
+            Pop right from countStack
+            Pop left from countStack
+            Set finalVal = call applyValuation(segment character, right, left)
+            Push finalVal onto countStack
+        ELSE
+            THROW "Error: Invalid infix expression"
+        ENDIF
+    ENDFOR
+
+    IF countStack size is not 1 THEN
+        THROW "Error: Invalid infix expression"
+    ENDIF
+    
+    RETURN top item on countStack
+END FUNCTION
+
+
+// Evaluates operator structural groups
+START FUNCTION isCollectionModifier(token)
+    RETURN true if token is '+', '-', '*', '/', or '%' else false
+END FUNCTION
+
+
+// Determines operational priority weights
+START FUNCTION getModifierWeight(modifier)
+    IF modifier is '+' or '-' THEN RETURN 1
+    IF modifier is '*', '/', or '%' THEN RETURN 2
+    RETURN -1
+END FUNCTION
+
+
+// Mathematical computation switch engine
+START FUNCTION applyValuation(modifier, b, a)
+    SWITCH modifier DO
+        CASE '+' -> RETURN a + b
+        CASE '-' -> RETURN a - b
+        CASE '*' -> RETURN a * b
+        CASE '/' -> 
+            IF b is 0 THEN THROW "Error: Division by zero"
+            RETURN a / b
+        CASE '%' -> 
+            IF b is 0 THEN THROW "Error: Division by zero"
+            RETURN a % b
+        DEFAULT -> RETURN 0
+    END SWITCH
+END FUNCTION
