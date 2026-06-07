@@ -8,12 +8,12 @@ import java.util.Stack;
  */
 public class InfixCalculator {
 
-    public int evaluateInfix(String sheldoncooperExpression) {
-        if (sheldoncooperExpression == null || sheldoncooperExpression.trim().isEmpty()) {
+    public int evaluateInfix(String infixExpression) {
+        if (infixExpression == null || infixExpression.trim().isEmpty()) {
             throw new IllegalArgumentException("Error: Invalid infix expression");
         }
-        
-        String cleanLot = sheldoncooperExpression.trim();
+
+        String cleanLot = infixExpression.trim();
         if (isPostfixExpression(cleanLot)) {
             return processPostfixExpression(cleanLot);
         }

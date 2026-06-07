@@ -2,13 +2,13 @@
 RYLEY'S COMIC BOOK MANIFEST INFIX ENGINE PSEUDOCODE
 ================================================================================
 
-START FUNCTION evaluateInfix(sheldoncooperExpression)
+START FUNCTION evaluateInfix(infixExpression)
     // Kill execution if data input is empty
-    IF sheldoncooperExpression is blank OR empty THEN
+    IF infixExpression is blank OR empty THEN
         THROW "Error: Invalid infix expression"
     ENDIF
 
-    Set cleanLot = trimmed spaces from sheldoncooperExpression
+    Set cleanLot = trimmed spaces from infixExpression
 
     // Postfix branch router: bypass normal shunting if syntax matches postfix
     IF call isPostfixExpression(cleanLot) THEN
@@ -73,7 +73,6 @@ START FUNCTION evaluateInfix(sheldoncooperExpression)
                 Push result onto issueCountStack
             ENDWHILE
             Push currentToken onto modifierStack
-            
         ELSE
             THROW "Error: Invalid infix expression"
         ENDIF
