@@ -1,3 +1,12 @@
+/**
+ * Action Figures Inventory Management and Sorting System
+ * Student Name: Ryley Carlson
+ * Course: CSC400 Module 5 Critical Thinking Assignment
+ * Date: 2026-06-14
+ * Program: RadixFigureSorter.java
+ * Description: This class implements the LSD Radix Sort algorithm to sort an array of ActionFigure objects based on their SKU codes.
+ */
+
 package ActionFigures; // Package declaration for organizing related classes
 
 public class RadixFigureSorter {
