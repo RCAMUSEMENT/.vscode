@@ -1,0 +1,22 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ],
+    "cSpell.words": [
+        "actionfigures",
+        "Aquaman",
+        "Attano",
+        "Corvo",
+        "Coulson",
+        "Deedlit",
+        "Diggle",
+        "Geralt",
+        "Lodoss",
+        "Rivia",
+        "Ronin",
+        "Toretto",
+        "Witcher"
+    ]
+}
