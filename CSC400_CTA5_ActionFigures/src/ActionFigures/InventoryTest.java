@@ -2,7 +2,7 @@ package ActionFigures; // Package declaration for organizing related classes
 
 public class InventoryTest {
     public static void main(String[] args) {
-        // Mapping out my real backroom stock with a variety of SKU codes to test the sorting algorithm
+        // Mapping out my real action figure stock with a variety of SKU codes to test the sorting algorithm
         ActionFigure[] backroomStock = {
             new ActionFigure("joke", "The Joker Deluxe Edition"),
             new ActionFigure("book", "Bookworm Batman (Retro Variant)"),
@@ -21,7 +21,7 @@ public class InventoryTest {
         }; // A diverse set of action figures with varying SKU lengths and characters to thoroughly test the radix sort implementation
 
         System.out.println("========================================================="); // Decorative header for clarity in output
-        System.out.println("     ACTION FIGURE WAREHOUSE LOGISTICS: RADIX SORT       ");    // Title for the test output
+        System.out.println("  RYLEY'S ACTION FIGURE WAREHOUSE LOGISTICS: RADIX SORT  ");    // Title for the test output
         System.out.println("========================================================="); // Decorative footer for clarity in output
         System.out.println("Unsorted Backroom Inventory:"); // Initial state of the inventory before sorting
         printInventory(backroomStock); // Display the unsorted inventory to the console
