@@ -1,8 +1,8 @@
-package ActionFigures;
+package ActionFigures; // Package declaration for organizing related classes
 
 public class InventoryTest {
     public static void main(String[] args) {
-        // Mapping our real action figure names directly to the assignment's data strings
+        // Mapping out my real backroom stock with a variety of SKU codes to test the sorting algorithm
         ActionFigure[] backroomStock = {
             new ActionFigure("joke", "The Joker Deluxe Edition"),
             new ActionFigure("book", "Bookworm Batman (Retro Variant)"),
@@ -18,26 +18,26 @@ public class InventoryTest {
             new ActionFigure("fast", "Fast & Furious Dominic Toretto"),
             new ActionFigure("dog", "Dog-Welder Section 8 Comedy Figure"),
             new ActionFigure("bend", "Bender (Metallic Retro Robot)")
-        };
+        }; // A diverse set of action figures with varying SKU lengths and characters to thoroughly test the radix sort implementation
 
-        System.out.println("=========================================================");
-        System.out.println("     ACTION FIGURE WAREHOUSE LOGISTICS: RADIX SORT       ");
-        System.out.println("=========================================================");
-        System.out.println("Unsorted Backroom Inventory:");
-        printInventory(backroomStock);
-        System.out.println("---------------------------------------------------------");
+        System.out.println("========================================================="); // Decorative header for clarity in output
+        System.out.println("     ACTION FIGURE WAREHOUSE LOGISTICS: RADIX SORT       ");    // Title for the test output
+        System.out.println("========================================================="); // Decorative footer for clarity in output
+        System.out.println("Unsorted Backroom Inventory:"); // Initial state of the inventory before sorting
+        printInventory(backroomStock); // Display the unsorted inventory to the console
+        System.out.println("---------------------------------------------------------"); // Separator for better readability in the console output
 
         // Run the sort engine
-        RadixFigureSorter.sort(backroomStock);
+        RadixFigureSorter.sort(backroomStock); // Sort the inventory using our custom radix sort implementation
 
-        System.out.println("Sorted Catalog Registry (Alphabetical via SKU Code):");
-        printInventory(backroomStock);
-        System.out.println("=========================================================");
+        System.out.println("Sorted Catalog Registry (Alphabetical via SKU Code):"); // State of the inventory after sorting, showing the final sorted order to the console  
+        printInventory(backroomStock); // Display the sorted inventory to the console
+        System.out.println("========================================================="); // Decorative footer to signify the end of the test output
     }
 
     private static void printInventory(ActionFigure[] inventory) {
         for (ActionFigure figure : inventory) {
-            System.out.println(" " + figure.toString());
+            System.out.println(" " + figure.toString()); // Print each figure's details in a formatted manner for better readability
         }
     }
 }
