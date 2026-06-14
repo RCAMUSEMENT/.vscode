@@ -1,10 +1,10 @@
-// ============================================================================
-// MODULE 2 CT Assignment: Popeye's Nautical Multiset Cargo Hold (Bag Class Extension)
-// Student: Ryley Carlson | Course: CSC400 Data Structures and Algorithms
-// Due Date: May 24, 2026
-// ============================================================================
+// ============================================================================ 
+// MODULE 2 CT Assignment: Popeye's Nautical Multiset Cargo Hold (Bag Class Extension) 
+// Student: Ryley Carlson | Course: CSC400 Data Structures and Algorithms 
+// Due Date: May 24, 2026 
+// ============================================================================ 
 
-CLASS Bag<T>
+CLASS Bag<T> IMPLEMENTS Iterable
     PRIVATE elementsHold AS ArrayList of T
 
     CONSTRUCTOR Bag()
@@ -37,9 +37,9 @@ CLASS Bag<T>
         RETURN continuousTally
     END METHOD
 
-    // =========================================================================
-    // NEW ADDITIONS FOR CRITICAL THINKING ASSIGNMENT WEEK 2
-    // =========================================================================
+    // ========================================================================= 
+    // NEW ADDITIONS FOR CRITICAL THINKING ASSIGNMENT WEEK 2 
+    // ========================================================================= 
 
     METHOD size() RETURNS Integer
         RETURN count of elements inside elementsHold
@@ -47,18 +47,24 @@ CLASS Bag<T>
 
     METHOD merge(otherBag: Bag<T>)
         IF otherBag IS NOT NULL THEN
-            Append all elements from otherBag.elementsHold to elementsHold
+            FOR EACH item IN otherBag DO
+                add(item)
+            END FOR
         END IF
     END METHOD
 
     METHOD distinct() RETURNS Bag<T>
         Initialize distinctBag as a New Bag
+        Initialize optimizationSet as a New HashSet
         FOR EACH checkedEntry IN elementsHold DO
-            IF distinctBag.contains(checkedEntry) IS False THEN
+            IF optimizationSet.add(checkedEntry) IS True THEN
                 distinctBag.add(checkedEntry)
             END IF
         END FOR
         RETURN distinctBag
     END METHOD
 
+    METHOD iterator() RETURNS Iterator
+        RETURN elementsHold.iterator()
+    END METHOD
 END CLASS

@@ -1,19 +1,19 @@
-/**
- * Popeye's Nautical Multiset Cargo Hold
- * Student Name: Ryley Carlson
- * Course: CSC400 Module 2 Critical Thinking Assignment
- * Date: 2026-05-24
- * Program: Main.java
- * Description: An orchestration program that demonstrates a generic Bag (multiset)
- * data structure container. The application verifies adding, removing, containing,
- * size monitoring, merging, and distinct filtering operations using a Popeye theme.
+/** 
+ * Popeye's Nautical Multiset Cargo Hold 
+ * Student Name: Ryley Carlson 
+ * Course: CSC400 Module 2 Critical Thinking Assignment 
+ * Date: 2026-05-24 
+ * Program: Main.java 
+ * Description: An orchestration program that demonstrates a generic Bag (multiset) 
+ * data structure container. The application verifies adding, removing, containing, 
+ * size monitoring, merging, and distinct filtering operations using a Popeye theme. 
  */
 package com.sweethaven;
 
 import com.sweethaven.collection.Bag;
 
-/**
- * Requirement #3: I wrote a Java program that demonstrates the usage of the `Bag` class.
+/** 
+ * Requirement #3: I wrote a Java program that demonstrates the usage of the `Bag` class. 
  */
 public class Main {
     public static void main(String[] args) {
@@ -37,6 +37,11 @@ public class Main {
         // Requirement #3.3. Print the bag contents.
         System.out.println("\n[REQUIREMENT 3.3] Outputting full structural contents profile of the Bag:");
         System.out.println(">>> Hold Layout Manifest: " + sweetHavenStorage);
+
+        System.out.println("\n[INSTRUCTOR ENHANCEMENT] Iterating through cargo utilizing enhanced for-each loop natively:");
+        for (String item : sweetHavenStorage) {
+            System.out.println(">>> On Deck Item Manifest Row: " + item);
+        }
 
         // Requirement #3.4. Test the 'contains' method for a few elements.
         System.out.println("\n[REQUIREMENT 3.4] Testing the 'contains' method verification layer...");
@@ -65,12 +70,11 @@ public class Main {
         System.out.println("\n[REQUIREMENT 3.9] Testing the final 'count' value calculation metric post-removal...");
         System.out.println("New remaining inventory tally for 'Canned Spinach': " + sweetHavenStorage.count("Canned Spinach"));
 
-
-        // =========================================================================
-        // NEW ADDITIONS FOR CRITICAL THINKING ASSIGNMENT WEEK 2: MAIN WORKFLOW EXTENSIONS
-        // =========================================================================
+        // ========================================================================= 
+        // NEW ADDITIONS FOR CRITICAL THINKING ASSIGNMENT WEEK 2: MAIN WORKFLOW EXTENSIONS 
+        // ========================================================================= 
         System.out.println("\n===============================================================");
-        System.out.println("   MODULE 2 EXTENSION: SIZE, MERGING, AND DISTINCT FILTERS     ");
+        System.out.println(" MODULE 2 EXTENSION: SIZE, MERGING, AND DISTINCT FILTERS ");
         System.out.println("===============================================================");
 
         // Assignment Requirement: Create two instances of the bag class
