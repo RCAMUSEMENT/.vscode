@@ -1,39 +1,41 @@
-import java.util.Arrays; // 
+import java.util.Arrays;
 
-// Just a simple wrapper class named after the classic movie fish character.
+// henry limpet's custom naval tracking setup
 public class MrLimpetSort {
 
-    // Classic insertion sort. Think of it like sorting a hand of playing cards:
-    // you pick one card at a time and slide it into the right spot on the left.
-    public static void insertionSort(int[] schoolOfFish) {
-        int n = schoolOfFish.length;
+    // flips through the ranks using a simple backward pass
+    public static void insertionSort(int[] navalFleet) {
+        int totalSubmarines = navalFleet.length;
+        if (totalSubmarines <= 1) return;
 
-        // Loop through the array, starting at index 1 because index 0 is already "sorted" by itself.
-        for (int i = 1; i < n; ++i) {
-            int currentFish = schoolOfFish[i]; // Grab the fish we want to place.
-            int j = i - 1; // Start looking at the fish right before it.
+        int henryLimpetPointer = 1;
+        while (henryLimpetPointer < totalSubmarines) {
+            int targetLadyfish = navalFleet[henryLimpetPointer];
+            int crustaceanScan = henryLimpetPointer;
 
-            // As long as we aren't out of bounds and the fish on the left is bigger, 
-            // shift that bigger fish over to make room.
-            while (j >= 0 && schoolOfFish[j] > currentFish) {
-                schoolOfFish[j + 1] = schoolOfFish[j]; 
-                j = j - 1; // Keep moving left.
+            // slide the heavy ships out of the way
+            while (crustaceanScan > 0) {
+                int crustaceanLeft = navalFleet[crustaceanScan - 1];
+                if (crustaceanLeft <= targetLadyfish) {
+                    break;
+                }
+                navalFleet[crustaceanScan] = crustaceanLeft;
+                crustaceanScan--;
             }
             
-            // Put our current fish into the empty slot we just created.
-            schoolOfFish[j + 1] = currentFish;
+            navalFleet[crustaceanScan] = targetLadyfish;
+            henryLimpetPointer++;
         }
     }
 
     public static void main(String[] args) {
-        // Some random, messy data to test this out.
-        int[] sonarReadings = {82, 43, 27, 38, 3, 10, 9};
+        // tracking u-boats for thaddeus and the navy
+        int[] thaddeusReadings = new int[]{82, 43, 27, 38, 3, 10, 9};
 
-        System.out.println(" Unsorted Sonar Array: " + Arrays.toString(sonarReadings));
+        System.out.println(" Unsorted Sonar Array: " + Arrays.toString(thaddeusReadings));
 
-        // Run the sort and modify the array in place.
-        insertionSort(sonarReadings);
+        insertionSort(thaddeusReadings);
 
-        System.out.println(" Perfectly Aligned Array: " + Arrays.toString(sonarReadings));
+        System.out.println(" Perfectly Aligned Array: " + Arrays.toString(thaddeusReadings));
     }
 }
