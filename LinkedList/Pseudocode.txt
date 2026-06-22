@@ -1,46 +1,24 @@
-PROGRAM Bounty Hunting Guide
-PURPOSE Build and demonstrate a generic doubly linked list. Use the list to store bounty target IDs loaded from data.txt. Display a banner from banner.txt before running the demo.
+PROGRAM:
+============================================================
+            RYLEY'S GALACTIC BOUNTY REGISTRY
+============================================================
 
-CLASS CustomLinkedList<T>
+PURPOSE:
+Build and demonstrate a custom doubly linked list. Use the list to store bounty target IDs loaded from data.txt. Display a banner from banner.txt before running the demo.
+
+CLASS CustomLinkedList
     FIELDS
-        head: Node<T>
-        tail: Node<T>
+        head: Node
+        tail: Node
         size: integer
         modificationCount: integer
 
-    METHOD insert(value)
-        CALL addLast(value)
+    METHOD insert(data)
+        CALL addLast(data)
     END METHOD
 
-    METHOD addFirst(value)
-        CALL linkFirst(value)
-    END METHOD
-
-    METHOD addLast(value)
-        CALL linkLast(value)
-    END METHOD
-
-    METHOD add(index, value)
-        CALL checkPositionIndex(index)
-        IF index equals size THEN
-            CALL linkLast(value)
-            RETURN
-        END IF
-        IF index equals 0 THEN
-            CALL linkFirst(value)
-            RETURN
-        END IF
-        nextNode = nodeAt(index)
-        previousNode = nextNode.previous
-        newNode = new Node(value, previousNode, nextNode)
-        previousNode.next = newNode
-        nextNode.previous = newNode
-        size = size + 1
-        modificationCount = modificationCount + 1
-    END METHOD
-
-    METHOD delete(value) RETURNS boolean
-        node = findNode(value)
+    METHOD delete(data) RETURNS boolean
+        node = findNode(data)
         IF node is null THEN
             RETURN false
         END IF
@@ -48,61 +26,79 @@ CLASS CustomLinkedList<T>
         RETURN true
     END METHOD
 
-    METHOD removeFirst() RETURNS T
+    METHOD addFirst(data)
+        CALL linkFirst(data)
+    END METHOD
+
+    METHOD addLast(data)
+        CALL linkLast(data)
+    END METHOD
+
+    METHOD add(index, data)
+        CALL checkPositionIndex(index)
+        IF index equals size THEN
+            CALL addLast(data)
+            RETURN
+        END IF
+        IF index equals 0 THEN
+            CALL addFirst(data)
+            RETURN
+        END IF
+        nextNode = nodeAt(index)
+        previousNode = nextNode.previous
+        newNode = new Node(data, previousNode, nextNode)
+        previousNode.next = newNode
+        nextNode.previous = newNode
+        size = size + 1
+        modificationCount = modificationCount + 1
+    END METHOD
+
+    METHOD removeFirst() RETURNS integer
         IF head is null THEN
             THROW NoSuchElementException
         END IF
         RETURN unlink(head)
     END METHOD
 
-    METHOD removeLast() RETURNS T
+    METHOD removeLast() RETURNS integer
         IF tail is null THEN
             THROW NoSuchElementException
         END IF
         RETURN unlink(tail)
     END METHOD
 
-    METHOD removeAt(index) RETURNS T
-        CALL checkElementIndex(index)
-        RETURN unlink(nodeAt(index))
-    END METHOD
-
-    METHOD getFirst() RETURNS T
+    METHOD getFirst() RETURNS integer
         IF head is null THEN
             THROW NoSuchElementException
         END IF
-        RETURN head.value
+        RETURN head.data
     END METHOD
 
-    METHOD getLast() RETURNS T
+    METHOD getLast() RETURNS integer
         IF tail is null THEN
             THROW NoSuchElementException
         END IF
-        RETURN tail.value
+        RETURN tail.data
     END METHOD
 
-    METHOD get(index) RETURNS T
+    METHOD get(index) RETURNS integer
         CALL checkElementIndex(index)
-        RETURN nodeAt(index).value
+        RETURN nodeAt(index).data
     END METHOD
 
-    METHOD set(index, value) RETURNS T
+    METHOD set(index, data) RETURNS integer
         CALL checkElementIndex(index)
         node = nodeAt(index)
-        oldValue = node.value
-        node.value = value
-        RETURN oldValue
+        oldData = node.data
+        node.data = data
+        RETURN oldData
     END METHOD
 
-    METHOD contains(value) RETURNS boolean
-        RETURN findNode(value) is not null
-    END METHOD
-
-    METHOD indexOf(value) RETURNS integer
+    METHOD indexOf(data) RETURNS integer
         current = head
         index = 0
         WHILE current is not null
-            IF current.value equals value THEN
+            IF current.data equals data THEN
                 RETURN index
             END IF
             current = current.next
@@ -111,40 +107,19 @@ CLASS CustomLinkedList<T>
         RETURN -1
     END METHOD
 
-    METHOD lastIndexOf(value) RETURNS integer
-        current = tail
-        index = size - 1
-        WHILE current is not null
-            IF current.value equals value THEN
-                RETURN index
-            END IF
-            current = current.previous
-            index = index - 1
-        END WHILE
-        RETURN -1
-    END METHOD
-
-    // CORRECTED: Safely reverses values in-place without breaking pointer chains
     METHOD reverse()
-        IF size <= 1 THEN 
+        IF size <= 1 THEN
             RETURN
         END IF
         forward = head
         backward = tail
         FOR i FROM 0 TO (size / 2) - 1
-            temp = forward.value
-            forward.value = backward.value
-            backward.value = temp
+            temp = forward.data
+            forward.data = backward.data
+            backward.data = temp
             forward = forward.next
             backward = backward.previous
         END FOR
-        modificationCount = modificationCount + 1
-    END METHOD
-
-    METHOD clear()
-        head = null
-        tail = null
-        size = 0
         modificationCount = modificationCount + 1
     END METHOD
 
@@ -156,29 +131,11 @@ CLASS CustomLinkedList<T>
         RETURN size equals 0
     END METHOD
 
-    METHOD toArray() RETURNS array
-        values = new array with length size
-        current = head
-        FOR i FROM 0 TO values.length - 1
-            values[i] = current.value
-            current = current.next
-        END FOR
-        RETURN values
-    END METHOD
-
-    METHOD iterator() RETURNS Iterator<T>
-        RETURN new LinkedListIterator()
-    END METHOD
-
-    METHOD descending() RETURNS Iterable<T>
-        RETURN an iterable that creates a new ReverseIterator
-    END METHOD
-
     METHOD toString() RETURNS string
         builder = "["
         current = head
         WHILE current is not null
-            APPEND current.value to builder
+            APPEND current.data to builder
             current = current.next
             IF current is not null THEN
                 APPEND " <-> " to builder
@@ -188,9 +145,17 @@ CLASS CustomLinkedList<T>
         RETURN builder
     END METHOD
 
-    PRIVATE METHOD linkFirst(value)
+    METHOD iterator() RETURNS Iterator
+        RETURN new LinkedListIterator()
+    END METHOD
+
+    METHOD descending() RETURNS Iterable
+        RETURN an iterable that creates a new ReverseIterator
+    END METHOD
+
+    PRIVATE METHOD linkFirst(data)
         oldHead = head
-        newNode = new Node(value, null, oldHead)
+        newNode = new Node(data, null, oldHead)
         head = newNode
         IF oldHead is null THEN
             tail = newNode
@@ -201,9 +166,9 @@ CLASS CustomLinkedList<T>
         modificationCount = modificationCount + 1
     END METHOD
 
-    PRIVATE METHOD linkLast(value)
+    PRIVATE METHOD linkLast(data)
         oldTail = tail
-        newNode = new Node(value, oldTail, null)
+        newNode = new Node(data, oldTail, null)
         tail = newNode
         IF oldTail is null THEN
             head = newNode
@@ -214,8 +179,8 @@ CLASS CustomLinkedList<T>
         modificationCount = modificationCount + 1
     END METHOD
 
-    PRIVATE METHOD unlink(node) RETURNS T
-        removedValue = node.value
+    PRIVATE METHOD unlink(node) RETURNS integer
+        removedValue = node.data
         previousNode = node.previous
         nextNode = node.next
         IF previousNode is null THEN
@@ -228,7 +193,6 @@ CLASS CustomLinkedList<T>
         ELSE
             nextNode.previous = previousNode
         END IF
-        node.value = null
         node.previous = null
         node.next = null
         size = size - 1
@@ -236,7 +200,7 @@ CLASS CustomLinkedList<T>
         RETURN removedValue
     END METHOD
 
-    PRIVATE METHOD nodeAt(index) RETURNS Node<T>
+    PRIVATE METHOD nodeAt(index) RETURNS Node
         IF index is less than (size / 2) THEN
             current = head
             FOR i FROM 0 TO index - 1
@@ -251,10 +215,10 @@ CLASS CustomLinkedList<T>
         RETURN current
     END METHOD
 
-    PRIVATE METHOD findNode(value) RETURNS Node<T>
+    PRIVATE METHOD findNode(data) RETURNS Node
         current = head
         WHILE current is not null
-            IF current.value equals value THEN
+            IF current.data equals data THEN
                 RETURN current
             END IF
             current = current.next
@@ -274,49 +238,58 @@ CLASS CustomLinkedList<T>
         END IF
     END METHOD
 
-    CLASS Node<T>
-        value: T
-        previous: Node<T>
-        next: Node<T>
-        CONSTRUCTOR Node(value, previous, next)
-            this.value = value
+    CLASS Node
+        data: integer
+        previous: Node
+        next: Node
+        CONSTRUCTOR Node(data, previous, next)
+            this.data = data
             this.previous = previous
             this.next = next
         END CONSTRUCTOR
     END CLASS
 
-    ABSTRACT CLASS CheckedIterator
-        expectedModificationCount = current list modificationCount
-        nextNode = starting node
+    CLASS LinkedListIterator
+        FIELDS
+            expectedModificationCount = current list modificationCount
+            current = head
+
         METHOD hasNext() RETURNS boolean
-            RETURN nextNode is not null
+            RETURN current is not null
         END METHOD
-        METHOD next() RETURNS T
+
+        METHOD next() RETURNS integer
             IF expectedModificationCount does not equal modificationCount THEN
                 THROW ConcurrentModificationException
             END IF
-            IF nextNode is null THEN
+            IF current is null THEN
                 THROW NoSuchElementException
             END IF
-            value = nextNode.value
-            nextNode = advance(nextNode)
-            RETURN value
-        END METHOD
-        ABSTRACT METHOD advance(current) RETURNS Node<T> END ABSTRACT
-    END CLASS
-
-    // CORRECTED: Named LinkedListIterator to perfectly fulfill assignment requirements
-    CLASS LinkedListIterator EXTENDS CheckedIterator
-        START at head
-        METHOD advance(current) RETURNS Node<T>
-            RETURN current.next
+            data = current.data
+            current = current.next
+            RETURN data
         END METHOD
     END CLASS
 
-    CLASS ReverseIterator EXTENDS CheckedIterator
-        START at tail
-        METHOD advance(current) RETURNS Node<T>
-            RETURN current.previous
+    CLASS ReverseIterator
+        FIELDS
+            expectedModificationCount = current list modificationCount
+            current = tail
+
+        METHOD hasNext() RETURNS boolean
+            RETURN current is not null
+        END METHOD
+
+        METHOD next() RETURNS integer
+            IF expectedModificationCount does not equal modificationCount THEN
+                THROW ConcurrentModificationException
+            END IF
+            IF current is null THEN
+                THROW NoSuchElementException
+            END IF
+            data = current.data
+            current = current.previous
+            RETURN data
         END METHOD
     END CLASS
 END CLASS
@@ -328,7 +301,7 @@ CLASS Main
     CONSTANT CYAN = terminal cyan color
 
     METHOD main(args)
-        targets = new CustomLinkedList<Integer>
+        targets = new CustomLinkedList()
         CALL loadAsciiArtBanner("banner.txt")
         CALL loadNumbers(targets, "data.txt")
         CALL printSection("INITIAL TARGET MANIFEST")
@@ -357,6 +330,7 @@ CLASS Main
             PRINT not found message
         END IF
         CALL printList(targets)
+
         PRINT action message for reverse traversal
         FOR EACH targetId IN targets.descending()
             PRINT reverse scan line
@@ -415,9 +389,10 @@ CLASS Main
             PRINT "No active targets."
             RETURN
         END IF
-        FOR EACH targetId IN targets
+        iterator = targets.iterator()
+        WHILE iterator.hasNext()
             PRINT target signal line
-        END FOR
+        END WHILE
         PRINT list view using targets.toString()
     END METHOD
 
