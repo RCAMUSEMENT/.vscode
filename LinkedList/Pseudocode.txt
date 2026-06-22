@@ -1,0 +1,393 @@
+PROGRAM Bounty Hunting Guide
+PURPOSE
+    Build and demonstrate a generic doubly linked list.
+    Use the list to store bounty target IDs loaded from data.txt.
+    Display a banner from banner.txt before running the demo.
+CLASS LinkedList<T>
+    FIELDS
+        head: Node<T>
+        tail: Node<T>
+        size: integer
+        modificationCount: integer
+    METHOD insert(value)
+        CALL addLast(value)
+    END METHOD
+    METHOD addFirst(value)
+        CALL linkFirst(value)
+    END METHOD
+    METHOD addLast(value)
+        CALL linkLast(value)
+    END METHOD
+    METHOD add(index, value)
+        CALL checkPositionIndex(index)
+        IF index equals size THEN
+            CALL linkLast(value)
+            RETURN
+        END IF
+        IF index equals 0 THEN
+            CALL linkFirst(value)
+            RETURN
+        END IF
+        nextNode = nodeAt(index)
+        previousNode = nextNode.previous
+        newNode = new Node(value, previousNode, nextNode)
+        previousNode.next = newNode
+        nextNode.previous = newNode
+        size = size + 1
+        modificationCount = modificationCount + 1
+    END METHOD
+    METHOD delete(value) RETURNS boolean
+        node = findNode(value)
+        IF node is null THEN
+            RETURN false
+        END IF
+        CALL unlink(node)
+        RETURN true
+    END METHOD
+    METHOD removeFirst() RETURNS T
+        IF head is null THEN
+            THROW NoSuchElementException
+        END IF
+        RETURN unlink(head)
+    END METHOD
+    METHOD removeLast() RETURNS T
+        IF tail is null THEN
+            THROW NoSuchElementException
+        END IF
+        RETURN unlink(tail)
+    END METHOD
+    METHOD removeAt(index) RETURNS T
+        CALL checkElementIndex(index)
+        RETURN unlink(nodeAt(index))
+    END METHOD
+    METHOD getFirst() RETURNS T
+        IF head is null THEN
+            THROW NoSuchElementException
+        END IF
+        RETURN head.value
+    END METHOD
+    METHOD getLast() RETURNS T
+        IF tail is null THEN
+            THROW NoSuchElementException
+        END IF
+        RETURN tail.value
+    END METHOD
+    METHOD get(index) RETURNS T
+        CALL checkElementIndex(index)
+        RETURN nodeAt(index).value
+    END METHOD
+    METHOD set(index, value) RETURNS T
+        CALL checkElementIndex(index)
+        node = nodeAt(index)
+        oldValue = node.value
+        node.value = value
+        RETURN oldValue
+    END METHOD
+    METHOD contains(value) RETURNS boolean
+        RETURN findNode(value) is not null
+    END METHOD
+    METHOD indexOf(value) RETURNS integer
+        current = head
+        index = 0
+        WHILE current is not null
+            IF current.value equals value THEN
+                RETURN index
+            END IF
+            current = current.next
+            index = index + 1
+        END WHILE
+        RETURN -1
+    END METHOD
+    METHOD lastIndexOf(value) RETURNS integer
+        current = tail
+        index = size - 1
+        WHILE current is not null
+            IF current.value equals value THEN
+                RETURN index
+            END IF
+            current = current.previous
+            index = index - 1
+        END WHILE
+        RETURN -1
+    END METHOD
+    METHOD reverse()
+        current = head
+        oldHead = head
+        WHILE current is not null
+            next = current.next
+            current.next = current.previous
+            current.previous = next
+            current = next
+        END WHILE
+        head = tail
+        tail = oldHead
+        modificationCount = modificationCount + 1
+    END METHOD
+    METHOD clear()
+        current = head
+        WHILE current is not null
+            next = current.next
+            current.value = null
+            current.previous = null
+            current.next = null
+            current = next
+        END WHILE
+        head = null
+        tail = null
+        size = 0
+        modificationCount = modificationCount + 1
+    END METHOD
+    METHOD size() RETURNS integer
+        RETURN size
+    END METHOD
+    METHOD isEmpty() RETURNS boolean
+        RETURN size equals 0
+    END METHOD
+    METHOD toArray() RETURNS array
+        values = new array with length size
+        current = head
+        FOR i FROM 0 TO values.length - 1
+            values[i] = current.value
+            current = current.next
+        END FOR
+        RETURN values
+    END METHOD
+    METHOD iterator() RETURNS Iterator<T>
+        RETURN new ForwardIterator
+    END METHOD
+    METHOD descending() RETURNS Iterable<T>
+        RETURN an iterable that creates a new ReverseIterator
+    END METHOD
+    METHOD toString() RETURNS string
+        builder = "["
+        current = head
+        WHILE current is not null
+            APPEND current.value to builder
+            current = current.next
+            IF current is not null THEN
+                APPEND " <-> " to builder
+            END IF
+        END WHILE
+        APPEND "]" to builder
+        RETURN builder
+    END METHOD
+    PRIVATE METHOD linkFirst(value)
+        oldHead = head
+        newNode = new Node(value, null, oldHead)
+        head = newNode
+        IF oldHead is null THEN
+            tail = newNode
+        ELSE
+            oldHead.previous = newNode
+        END IF
+        size = size + 1
+        modificationCount = modificationCount + 1
+    END METHOD
+    PRIVATE METHOD linkLast(value)
+        oldTail = tail
+        newNode = new Node(value, oldTail, null)
+        tail = newNode
+        IF oldTail is null THEN
+            head = newNode
+        ELSE
+            oldTail.next = newNode
+        END IF
+        size = size + 1
+        modificationCount = modificationCount + 1
+    END METHOD
+    PRIVATE METHOD unlink(node) RETURNS T
+        removedValue = node.value
+        previousNode = node.previous
+        nextNode = node.next
+        IF previousNode is null THEN
+            head = nextNode
+        ELSE
+            previousNode.next = nextNode
+        END IF
+        IF nextNode is null THEN
+            tail = previousNode
+        ELSE
+            nextNode.previous = previousNode
+        END IF
+        node.value = null
+        node.previous = null
+        node.next = null
+        size = size - 1
+        modificationCount = modificationCount + 1
+        RETURN removedValue
+    END METHOD
+    PRIVATE METHOD nodeAt(index) RETURNS Node<T>
+        IF index is in first half of list THEN
+            current = head
+            FOR i FROM 0 TO index - 1
+                current = current.next
+            END FOR
+            RETURN current
+        END IF
+        current = tail
+        FOR i FROM size - 1 DOWN TO index + 1
+            current = current.previous
+        END FOR
+        RETURN current
+    END METHOD
+    PRIVATE METHOD findNode(value) RETURNS Node<T>
+        current = head
+        WHILE current is not null
+            IF current.value equals value THEN
+                RETURN current
+            END IF
+            current = current.next
+        END WHILE
+        RETURN null
+    END METHOD
+    PRIVATE METHOD checkElementIndex(index)
+        IF index is less than 0 OR index is greater than or equal to size THEN
+            THROW IndexOutOfBoundsException
+        END IF
+    END METHOD
+    PRIVATE METHOD checkPositionIndex(index)
+        IF index is less than 0 OR index is greater than size THEN
+            THROW IndexOutOfBoundsException
+        END IF
+    END METHOD
+    CLASS Node<T>
+        value: T
+        previous: Node<T>
+        next: Node<T>
+        CONSTRUCTOR Node(value, previous, next)
+            this.value = value
+            this.previous = previous
+            this.next = next
+        END CONSTRUCTOR
+    END CLASS
+    ABSTRACT CLASS CheckedIterator
+        expectedModificationCount = current list modificationCount
+        nextNode = starting node
+        METHOD hasNext() RETURNS boolean
+            RETURN nextNode is not null
+        END METHOD
+        METHOD next() RETURNS T
+            IF expectedModificationCount does not equal modificationCount THEN
+                THROW ConcurrentModificationException
+            END IF
+            IF nextNode is null THEN
+                THROW NoSuchElementException
+            END IF
+            value = nextNode.value
+            nextNode = advance(nextNode)
+            RETURN value
+        END METHOD
+        ABSTRACT METHOD advance(current) RETURNS Node<T>
+    END CLASS
+    CLASS ForwardIterator EXTENDS CheckedIterator
+        START at head
+        METHOD advance(current) RETURNS Node<T>
+            RETURN current.next
+        END METHOD
+    END CLASS
+    CLASS ReverseIterator EXTENDS CheckedIterator
+        START at tail
+        METHOD advance(current) RETURNS Node<T>
+            RETURN current.previous
+        END METHOD
+    END CLASS
+END CLASS
+CLASS Main
+    CONSTANT RESET = terminal reset color
+    CONSTANT GREEN = terminal green color
+    CONSTANT RED = terminal red color
+    CONSTANT CYAN = terminal cyan color
+    METHOD main(args)
+        targets = new LinkedList<Integer>
+        CALL loadAsciiArtBanner("banner.txt")
+        CALL loadNumbers(targets, "data.txt")
+        CALL printSection("INITIAL TARGET MANIFEST")
+        CALL printList(targets)
+        PRINT action message for adding priority target
+        CALL targets.addFirst(777)
+        CALL printList(targets)
+        insertIndex = minimum of 2 and targets.size()
+        PRINT action message for indexed insert
+        CALL targets.add(insertIndex, 404)
+        CALL printList(targets)
+        PRINT action message for replacement
+        replaced = targets.set(1, 888)
+        PRINT replaced target
+        CALL printList(targets)
+        PRINT action message for searching and removing target 501
+        PRINT targets.indexOf(501)
+        removed = targets.delete(501)
+        IF removed THEN
+            PRINT success message
+        ELSE
+            PRINT not found message
+        END IF
+        CALL printList(targets)
+        PRINT action message for reverse traversal
+        FOR EACH targetId IN targets.descending()
+            PRINT reverse scan line
+        END FOR
+        PRINT action message for reversing the actual list
+        CALL targets.reverse()
+        CALL printList(targets)
+        PRINT targets.getFirst()
+        PRINT targets.getLast()
+        PRINT targets.size()
+        PRINT session terminated message
+    END METHOD
+    METHOD loadNumbers(targets, filename)
+        PRINT system message showing filename
+        TRY to open filename with a scanner
+            numbersLoaded = 0
+            WHILE scanner has another token
+                IF next token is an integer THEN
+                    CALL targets.insert(next integer)
+                    numbersLoaded = numbersLoaded + 1
+                ELSE
+                    skip the token
+                END IF
+            END WHILE
+            IF numbersLoaded equals 0 THEN
+                CALL loadSampleTargets(targets)
+                PRINT notice that sample targets were loaded
+            ELSE
+                PRINT success message
+            END IF
+        CATCH FileNotFoundException
+            PRINT error message
+            CALL loadSampleTargets(targets)
+        END TRY
+    END METHOD
+    METHOD loadSampleTargets(targets)
+        CALL targets.insert(101)
+        CALL targets.insert(501)
+        CALL targets.insert(302)
+    END METHOD
+    METHOD printSection(title)
+        PRINT blank line
+        PRINT divider
+        PRINT title surrounded by arrows
+        PRINT divider
+    END METHOD
+    METHOD printList(targets)
+        IF targets.isEmpty() THEN
+            PRINT "No active targets."
+            RETURN
+        END IF
+        FOR EACH targetId IN targets
+            PRINT target signal line
+        END FOR
+        PRINT list view using targets.toString()
+    END METHOD
+    METHOD loadAsciiArtBanner(filepath)
+        TRY to open filepath with a scanner
+            SET terminal text color to green
+            WHILE scanner has another line
+                PRINT next line
+            END WHILE
+            RESET terminal text color
+        CATCH FileNotFoundException
+            PRINT fallback green banner text
+        END TRY
+    END METHOD
+END CLASS
