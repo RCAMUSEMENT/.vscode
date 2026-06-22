@@ -5,13 +5,10 @@
  * Program: CustomLinkedList.java
  */
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class CustomLinkedList<T> implements Iterable<T> {
     private Node<T> head;
