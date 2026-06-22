@@ -1,3 +1,10 @@
+/*
+ * Student Name: Ryley Carlson
+ * CSC400 Critical Thinking Assignment: RYLEY'S GALACTIC BOUNTY REGISTRY
+ * Date: 2026-06-07
+ * Program: CustomLinkedList.java
+ */
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ConcurrentModificationException;
@@ -129,13 +136,13 @@ public class CustomLinkedList<T> implements Iterable<T> {
         return values;
     }
 
-    @Override 
-    public Iterator<T> iterator() { 
-        return new LinkedListIterator(); 
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListIterator();
     }
 
-    public Iterable<T> descending() { 
-        return () -> new ReverseIterator(); 
+    public Iterable<T> descending() {
+        return () -> new ReverseIterator();
     }
 
     @Override
@@ -253,7 +260,6 @@ public class CustomLinkedList<T> implements Iterable<T> {
         protected abstract Node<T> advance(Node<T> current);
     }
 
-    // Matches assignment naming schema exactly
     private final class LinkedListIterator extends CheckedIterator {
         private LinkedListIterator() { super(head); }
         @Override protected Node<T> advance(Node<T> current) { return current.next; }
@@ -262,117 +268,5 @@ public class CustomLinkedList<T> implements Iterable<T> {
     private final class ReverseIterator extends CheckedIterator {
         private ReverseIterator() { super(tail); }
         @Override protected Node<T> advance(Node<T> current) { return current.previous; }
-    }
-}
-
-final class Main {
-    private static final String RESET = "\u001B[0m";
-    private static final String GREEN = "\u001B[32m";
-    private static final String RED = "\u001B[31m";
-    private static final String CYAN = "\u001B[36m";
-
-    private Main() { }
-
-    public static void main(String[] args) {
-        CustomLinkedList<Integer> targets = new CustomLinkedList<>();
-        loadAsciiArtBanner("banner.txt");
-        loadNumbers(targets, "data.txt");
-
-        printSection("INITIAL TARGET MANIFEST");
-        printList(targets);
-
-        System.out.println("\n[ACTION] Inserting priority target #777 at the front.");
-        targets.addFirst(777);
-        printList(targets);
-
-        int insertIndex = Math.min(2, targets.size());
-        System.out.println("\n[ACTION] Inserting target #404 at index " + insertIndex + ".");
-        targets.add(insertIndex, 404);
-        printList(targets);
-
-        System.out.println("\n[ACTION] Replacing index 1 with upgraded target #888.");
-        Integer replaced = targets.set(1, 888);
-        System.out.println("Replaced target: " + CYAN + replaced + RESET);
-        printList(targets);
-
-        System.out.println("\n[ACTION] Searching and removing target #501.");
-        System.out.println("Target #501 first index: " + targets.indexOf(501));
-        boolean removed = targets.delete(501);
-        System.out.println(removed ? GREEN + "[SUCCESS] Target removed." + RESET : RED + "[NOTICE] Target was not found." + RESET);
-        printList(targets);
-
-        System.out.println("\n[ACTION] Reverse traversal without mutating the list.");
-        for (Integer targetId : targets.descending()) {
-            System.out.println("Reverse scan: [#" + CYAN + targetId + RESET + "]");
-        }
-
-        System.out.println("\n[ACTION] Reversing list links in place.");
-        targets.reverse();
-        printList(targets);
-
-        System.out.println("\nFirst target ID: " + CYAN + targets.getFirst() + RESET);
-        System.out.println("Last target ID: " + CYAN + targets.getLast() + RESET);
-        System.out.println("Total active targets: " + CYAN + targets.size() + RESET);
-        System.out.println("\n" + CYAN + "[SYSTEM] Session locked. Transmission terminated." + RESET);
-    }
-
-    private static void loadNumbers(CustomLinkedList<Integer> targets, String filename) {
-        System.out.println(CYAN + "[SYSTEM] Reading target IDs from: " + filename + RESET);
-        try (Scanner scanner = new Scanner(new File(filename))) {
-            int numbersLoaded = 0;
-            while (scanner.hasNext()) {
-                if (scanner.hasNextInt()) {
-                    targets.insert(scanner.nextInt());
-                    numbersLoaded++;
-                } else {
-                    scanner.next();
-                }
-            }
-            if (numbersLoaded == 0) {
-                loadSampleTargets(targets);
-                System.out.println(RED + "[NOTICE] Data file contained no integers. Loaded sample targets instead." + RESET);
-            } else {
-                System.out.println(GREEN + "[SUCCESS] Target IDs loaded." + RESET);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println(RED + "[ERROR] Data file missing. Loading sample targets instead." + RESET);
-            loadSampleTargets(targets);
-        }
-    }
-
-    private static void loadSampleTargets(CustomLinkedList<Integer> targets) {
-        targets.insert(101);
-        targets.insert(501);
-        targets.insert(302);
-    }
-
-    private static void printSection(String title) {
-        System.out.println();
-        System.out.println("=======================================================");
-        System.out.println(GREEN + ">>> " + title + " <<<" + RESET);
-        System.out.println("=======================================================");
-    }
-
-    private static void printList(CustomLinkedList<Integer> targets) {
-        if (targets.isEmpty()) {
-            System.out.println("No active targets.");
-            return;
-        }
-        for (Integer targetId : targets) {
-            System.out.println("Target signal locked: [#" + CYAN + targetId + RESET + "]");
-        }
-        System.out.println("List view: " + targets);
-    }
-
-    private static void loadAsciiArtBanner(String filepath) {
-        try (Scanner scanner = new Scanner(new File(filepath))) {
-            System.out.print(GREEN);
-            while (scanner.hasNextLine()) {
-                System.out.println(scanner.nextLine());
-            }
-            System.out.print(RESET);
-        } catch (FileNotFoundException e) {
-            System.out.println(GREEN + "--- GALACTIC BOUNTY REGISTRY ---" + RESET);
-        }
     }
 }

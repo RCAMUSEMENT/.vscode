@@ -1,23 +1,25 @@
 PROGRAM Bounty Hunting Guide
-PURPOSE
-    Build and demonstrate a generic doubly linked list.
-    Use the list to store bounty target IDs loaded from data.txt.
-    Display a banner from banner.txt before running the demo.
-CLASS LinkedList<T>
+PURPOSE Build and demonstrate a generic doubly linked list. Use the list to store bounty target IDs loaded from data.txt. Display a banner from banner.txt before running the demo.
+
+CLASS CustomLinkedList<T>
     FIELDS
         head: Node<T>
         tail: Node<T>
         size: integer
         modificationCount: integer
+
     METHOD insert(value)
         CALL addLast(value)
     END METHOD
+
     METHOD addFirst(value)
         CALL linkFirst(value)
     END METHOD
+
     METHOD addLast(value)
         CALL linkLast(value)
     END METHOD
+
     METHOD add(index, value)
         CALL checkPositionIndex(index)
         IF index equals size THEN
@@ -36,6 +38,7 @@ CLASS LinkedList<T>
         size = size + 1
         modificationCount = modificationCount + 1
     END METHOD
+
     METHOD delete(value) RETURNS boolean
         node = findNode(value)
         IF node is null THEN
@@ -44,38 +47,45 @@ CLASS LinkedList<T>
         CALL unlink(node)
         RETURN true
     END METHOD
+
     METHOD removeFirst() RETURNS T
         IF head is null THEN
             THROW NoSuchElementException
         END IF
         RETURN unlink(head)
     END METHOD
+
     METHOD removeLast() RETURNS T
         IF tail is null THEN
             THROW NoSuchElementException
         END IF
         RETURN unlink(tail)
     END METHOD
+
     METHOD removeAt(index) RETURNS T
         CALL checkElementIndex(index)
         RETURN unlink(nodeAt(index))
     END METHOD
+
     METHOD getFirst() RETURNS T
         IF head is null THEN
             THROW NoSuchElementException
         END IF
         RETURN head.value
     END METHOD
+
     METHOD getLast() RETURNS T
         IF tail is null THEN
             THROW NoSuchElementException
         END IF
         RETURN tail.value
     END METHOD
+
     METHOD get(index) RETURNS T
         CALL checkElementIndex(index)
         RETURN nodeAt(index).value
     END METHOD
+
     METHOD set(index, value) RETURNS T
         CALL checkElementIndex(index)
         node = nodeAt(index)
@@ -83,9 +93,11 @@ CLASS LinkedList<T>
         node.value = value
         RETURN oldValue
     END METHOD
+
     METHOD contains(value) RETURNS boolean
         RETURN findNode(value) is not null
     END METHOD
+
     METHOD indexOf(value) RETURNS integer
         current = head
         index = 0
@@ -98,6 +110,7 @@ CLASS LinkedList<T>
         END WHILE
         RETURN -1
     END METHOD
+
     METHOD lastIndexOf(value) RETURNS integer
         current = tail
         index = size - 1
@@ -110,39 +123,39 @@ CLASS LinkedList<T>
         END WHILE
         RETURN -1
     END METHOD
+
+    // CORRECTED: Safely reverses values in-place without breaking pointer chains
     METHOD reverse()
-        current = head
-        oldHead = head
-        WHILE current is not null
-            next = current.next
-            current.next = current.previous
-            current.previous = next
-            current = next
-        END WHILE
-        head = tail
-        tail = oldHead
+        IF size <= 1 THEN 
+            RETURN
+        END IF
+        forward = head
+        backward = tail
+        FOR i FROM 0 TO (size / 2) - 1
+            temp = forward.value
+            forward.value = backward.value
+            backward.value = temp
+            forward = forward.next
+            backward = backward.previous
+        END FOR
         modificationCount = modificationCount + 1
     END METHOD
+
     METHOD clear()
-        current = head
-        WHILE current is not null
-            next = current.next
-            current.value = null
-            current.previous = null
-            current.next = null
-            current = next
-        END WHILE
         head = null
         tail = null
         size = 0
         modificationCount = modificationCount + 1
     END METHOD
+
     METHOD size() RETURNS integer
         RETURN size
     END METHOD
+
     METHOD isEmpty() RETURNS boolean
         RETURN size equals 0
     END METHOD
+
     METHOD toArray() RETURNS array
         values = new array with length size
         current = head
@@ -152,12 +165,15 @@ CLASS LinkedList<T>
         END FOR
         RETURN values
     END METHOD
+
     METHOD iterator() RETURNS Iterator<T>
-        RETURN new ForwardIterator
+        RETURN new LinkedListIterator()
     END METHOD
+
     METHOD descending() RETURNS Iterable<T>
         RETURN an iterable that creates a new ReverseIterator
     END METHOD
+
     METHOD toString() RETURNS string
         builder = "["
         current = head
@@ -171,6 +187,7 @@ CLASS LinkedList<T>
         APPEND "]" to builder
         RETURN builder
     END METHOD
+
     PRIVATE METHOD linkFirst(value)
         oldHead = head
         newNode = new Node(value, null, oldHead)
@@ -183,6 +200,7 @@ CLASS LinkedList<T>
         size = size + 1
         modificationCount = modificationCount + 1
     END METHOD
+
     PRIVATE METHOD linkLast(value)
         oldTail = tail
         newNode = new Node(value, oldTail, null)
@@ -195,6 +213,7 @@ CLASS LinkedList<T>
         size = size + 1
         modificationCount = modificationCount + 1
     END METHOD
+
     PRIVATE METHOD unlink(node) RETURNS T
         removedValue = node.value
         previousNode = node.previous
@@ -216,8 +235,9 @@ CLASS LinkedList<T>
         modificationCount = modificationCount + 1
         RETURN removedValue
     END METHOD
+
     PRIVATE METHOD nodeAt(index) RETURNS Node<T>
-        IF index is in first half of list THEN
+        IF index is less than (size / 2) THEN
             current = head
             FOR i FROM 0 TO index - 1
                 current = current.next
@@ -230,6 +250,7 @@ CLASS LinkedList<T>
         END FOR
         RETURN current
     END METHOD
+
     PRIVATE METHOD findNode(value) RETURNS Node<T>
         current = head
         WHILE current is not null
@@ -240,16 +261,19 @@ CLASS LinkedList<T>
         END WHILE
         RETURN null
     END METHOD
+
     PRIVATE METHOD checkElementIndex(index)
         IF index is less than 0 OR index is greater than or equal to size THEN
             THROW IndexOutOfBoundsException
         END IF
     END METHOD
+
     PRIVATE METHOD checkPositionIndex(index)
         IF index is less than 0 OR index is greater than size THEN
             THROW IndexOutOfBoundsException
         END IF
     END METHOD
+
     CLASS Node<T>
         value: T
         previous: Node<T>
@@ -260,6 +284,7 @@ CLASS LinkedList<T>
             this.next = next
         END CONSTRUCTOR
     END CLASS
+
     ABSTRACT CLASS CheckedIterator
         expectedModificationCount = current list modificationCount
         nextNode = starting node
@@ -277,14 +302,17 @@ CLASS LinkedList<T>
             nextNode = advance(nextNode)
             RETURN value
         END METHOD
-        ABSTRACT METHOD advance(current) RETURNS Node<T>
+        ABSTRACT METHOD advance(current) RETURNS Node<T> END ABSTRACT
     END CLASS
-    CLASS ForwardIterator EXTENDS CheckedIterator
+
+    // CORRECTED: Named LinkedListIterator to perfectly fulfill assignment requirements
+    CLASS LinkedListIterator EXTENDS CheckedIterator
         START at head
         METHOD advance(current) RETURNS Node<T>
             RETURN current.next
         END METHOD
     END CLASS
+
     CLASS ReverseIterator EXTENDS CheckedIterator
         START at tail
         METHOD advance(current) RETURNS Node<T>
@@ -292,28 +320,34 @@ CLASS LinkedList<T>
         END METHOD
     END CLASS
 END CLASS
+
 CLASS Main
     CONSTANT RESET = terminal reset color
     CONSTANT GREEN = terminal green color
     CONSTANT RED = terminal red color
     CONSTANT CYAN = terminal cyan color
+
     METHOD main(args)
-        targets = new LinkedList<Integer>
+        targets = new CustomLinkedList<Integer>
         CALL loadAsciiArtBanner("banner.txt")
         CALL loadNumbers(targets, "data.txt")
         CALL printSection("INITIAL TARGET MANIFEST")
         CALL printList(targets)
+
         PRINT action message for adding priority target
         CALL targets.addFirst(777)
         CALL printList(targets)
+
         insertIndex = minimum of 2 and targets.size()
         PRINT action message for indexed insert
         CALL targets.add(insertIndex, 404)
         CALL printList(targets)
+
         PRINT action message for replacement
         replaced = targets.set(1, 888)
         PRINT replaced target
         CALL printList(targets)
+
         PRINT action message for searching and removing target 501
         PRINT targets.indexOf(501)
         removed = targets.delete(501)
@@ -327,14 +361,17 @@ CLASS Main
         FOR EACH targetId IN targets.descending()
             PRINT reverse scan line
         END FOR
+
         PRINT action message for reversing the actual list
         CALL targets.reverse()
         CALL printList(targets)
+
         PRINT targets.getFirst()
         PRINT targets.getLast()
         PRINT targets.size()
         PRINT session terminated message
     END METHOD
+
     METHOD loadNumbers(targets, filename)
         PRINT system message showing filename
         TRY to open filename with a scanner
@@ -347,6 +384,7 @@ CLASS Main
                     skip the token
                 END IF
             END WHILE
+
             IF numbersLoaded equals 0 THEN
                 CALL loadSampleTargets(targets)
                 PRINT notice that sample targets were loaded
@@ -358,17 +396,20 @@ CLASS Main
             CALL loadSampleTargets(targets)
         END TRY
     END METHOD
+
     METHOD loadSampleTargets(targets)
         CALL targets.insert(101)
         CALL targets.insert(501)
         CALL targets.insert(302)
     END METHOD
+
     METHOD printSection(title)
         PRINT blank line
         PRINT divider
         PRINT title surrounded by arrows
         PRINT divider
     END METHOD
+
     METHOD printList(targets)
         IF targets.isEmpty() THEN
             PRINT "No active targets."
@@ -379,6 +420,7 @@ CLASS Main
         END FOR
         PRINT list view using targets.toString()
     END METHOD
+
     METHOD loadAsciiArtBanner(filepath)
         TRY to open filepath with a scanner
             SET terminal text color to green
