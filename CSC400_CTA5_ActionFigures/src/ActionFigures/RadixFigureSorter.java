@@ -1,4 +1,5 @@
-/** * Action Figures Inventory Management and Sorting System
+/**
+ * Action Figures Inventory Management and Sorting System
  * Student Name: Ryley Carlson
  * Course: CSC400 Module 5 Critical Thinking Assignment
  * Date: 2026-06-14 * Program: RadixFigureSorter.java

@@ -1,0 +1,148 @@
+============================================================
+RYLEY'S ACTION FIGURE WAREHOUSE LOGISTICS: RADIX SORT
+============================================================
+PURPOSE: Define an immutable ActionFigure data structure and
+implement a stable Least Significant Digit (LSD) Radix Sort
+to organize warehouse stock alphabetically by varying SKU codes.
+
+CLASS ActionFigure
+    FIELDS
+        PRIVATE READONLY skuCode: string
+        PRIVATE READONLY figureName: string
+
+    CONSTRUCTOR ActionFigure(skuCode, figureName)
+        this.skuCode = skuCode
+        this.figureName = figureName
+    END CONSTRUCTOR
+
+    METHOD getSkuCode() RETURNS string
+        RETURN skuCode
+    END METHOD
+
+    METHOD toString() RETURNS string
+        RETURN formatted string "[skuCode: figureName]"
+    END METHOD
+END CLASS
+
+CLASS RadixFigureSorter
+    METHOD sort(inventory: Array of ActionFigure)
+        IF inventory is null OR length of inventory equals 0 THEN
+            RETURN
+        END IF
+
+        // Figure out the maximum string length to know how many passes to run
+        maxLen = 0
+        FOR EACH figure IN inventory
+            IF figure is not null AND figure.getSkuCode() is not null THEN
+                IF length of figure.getSkuCode() > maxLen THEN
+                    maxLen = length of figure.getSkuCode()
+                END IF
+            END IF
+        END FOR
+
+        // Loop from the rightmost character down to the leftmost (LSD method)
+        FOR pos FROM maxLen - 1 DOWN TO 0
+            CALL stableCountingSort(inventory, pos)
+        END FOR
+    END METHOD
+
+    PRIVATE METHOD stableCountingSort(inventory: Array of ActionFigure, pos: integer)
+        n = length of inventory
+        output = new Array of ActionFigure of size n
+
+        // >>> ENHANCEMENT: Scaled to 258 slots to support full 0-255 ASCII range plus offsets safely
+        count = new Array of integers of size 258
+
+        // Step #1: Count how often each character shows up
+        FOR i FROM 0 TO n - 1
+            IF inventory[i] is not null AND inventory[i].getSkuCode() is not null THEN
+                charVal = CALL getCharCode(inventory[i].getSkuCode(), pos)
+                count[charVal + 1] = count[charVal + 1] + 1
+            ELSE
+                // >>> ENHANCEMENT: Direct nulls smoothly to bucket index 0 for clean aggregation
+                count[0 + 1] = count[0 + 1] + 1
+            END IF
+        END FOR
+
+        // Step #2: Transform counts into actual array positions
+        // >>> ENHANCEMENT: Expanded lookahead iteration boundary limit checks to match new count limit
+        FOR i FROM 0 TO 256
+            count[i + 1] = count[i + 1] + count[i]
+        END FOR
+
+        // FIXED Step #3: Populate the output array FORWARDS to maintain a stable sort
+        FOR i FROM 0 TO n - 1
+            // >>> ENHANCEMENT: Integrated unified ternary checking logic for safe dynamic indexing loops
+            IF inventory[i] is not null AND inventory[i].getSkuCode() is not null THEN
+                charVal = CALL getCharCode(inventory[i].getSkuCode(), pos)
+            ELSE
+                charVal = 0
+            END IF
+
+            output[count[charVal]] = inventory[i]
+            count[charVal] = count[charVal] + 1
+        END FOR
+
+        // Step #4: Write the sorted batch back into our main storage array
+        CALL System.arraycopy(output, 0, inventory, 0, n)
+    END METHOD
+
+    PRIVATE METHOD getCharCode(s: string, pos: integer) RETURNS integer
+        // Return the ASCII code of the character at pos, or 32 if pos exceeds string length
+        IF pos >= length of s THEN
+            RETURN 32
+        END IF
+
+        code = ASCII value of character at index pos in s
+
+        // >>> ENHANCEMENT: Clamped values to valid extended character map ranges to prevent exceptions
+        IF code < 0 OR code > 255 THEN
+            RETURN 32
+        END IF
+
+        RETURN code
+    END METHOD
+END CLASS
+
+CLASS InventoryTest
+    METHOD main(args)
+        // Mapping out my real action figure stock with a variety of SKU codes to test the sorting algorithm
+        backroomStock = Array containing [
+            ActionFigure("joke", "The Joker Deluxe Edition"),
+            ActionFigure("book", "Bookworm Batman (Retro Variant)"),
+            ActionFigure("back", "Bane (Backbreaker Battle-Damaged)"),
+            ActionFigure("dig", "Diggle Green Arrow Sidekick"),
+            ActionFigure("desk", "Desk-Duty Agent Coulson"),
+            ActionFigure("word", "Word Bearer Chaos Space Marine"),
+            ActionFigure("fish", "Fisherman Aquaman Target Exclusive"),
+            ActionFigure("ward", "Warden John Forge (Halo Series)"),
+            ActionFigure("dish", "Dishonored Corvo Attano Figure"),
+            ActionFigure("wit", "Witcher Geralt of Rivia (Ronin)"),
+            ActionFigure("deed", "Deedlit Record of Lodoss War Mini"),
+            ActionFigure("fast", "Fast & Furious Dominic Toretto"),
+            ActionFigure("dog", "Dog-Welder Section 8 Comedy Figure"),
+            ActionFigure("bend", "Bender (Metallic Retro Robot)")
+        ]
+
+        PRINT decorative header bars
+        PRINT " RYLEY'S ACTION FIGURE WAREHOUSE LOGISTICS: RADIX SORT "
+        PRINT decorative header bars
+
+        PRINT "Unsorted Backroom Inventory:"
+        CALL printInventory(backroomStock)
+        PRINT divider bar
+
+        // Run the sort engine
+        CALL RadixFigureSorter.sort(backroomStock)
+
+        PRINT "Sorted Catalog Registry (Alphabetical via SKU Code):"
+        CALL printInventory(backroomStock)
+        PRINT decorative footer bars
+    END METHOD
+
+    PRIVATE METHOD printInventory(inventory: Array of ActionFigure)
+        FOR EACH figure IN inventory
+            PRINT " " + figure.toString()
+        END FOR
+    END METHOD
+END CLASS
