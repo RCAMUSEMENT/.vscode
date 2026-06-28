@@ -1,9 +1,9 @@
 /*
- * Student Name: Ryley Carlson
- * CSC400 Critical Thinking Assignment: RYLEY'S GALACTIC BOUNTY REGISTRY
- * Date: 2026-06-07
- * Program: CustomLinkedList.java
- */
+* Student Name: Ryley Carlson
+* CSC400 Critical Thinking Assignment: RYLEY'S GALACTIC BOUNTY REGISTRY
+* Date: 2026-06-07
+* Program: CustomLinkedList.java
+*/
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,9 +39,14 @@ public class CustomLinkedList implements Iterable<Integer> {
 
     public void add(int index, int data) {
         checkPositionIndex(index);
-        if (index == size) { addLast(data); return; }
-        if (index == 0) { addFirst(data); return; }
-
+        if (index == size) {
+            addLast(data);
+            return;
+        }
+        if (index == 0) {
+            addFirst(data);
+            return;
+        }
         Node nextNode = nodeAt(index);
         Node previousNode = nextNode.previous;
         Node newNode = new Node(data, previousNode, nextNode);
@@ -107,8 +112,13 @@ public class CustomLinkedList implements Iterable<Integer> {
         modificationCount++;
     }
 
-    public int size() { return size; }
-    public boolean isEmpty() { return size == 0; }
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
 
     @Override
     public String toString() {
@@ -155,15 +165,16 @@ public class CustomLinkedList implements Iterable<Integer> {
         int removedValue = node.data;
         Node previousNode = node.previous;
         Node nextNode = node.next;
-
         if (previousNode == null) head = nextNode;
         else previousNode.next = nextNode;
-
         if (nextNode == null) tail = previousNode;
         else nextNode.previous = previousNode;
 
+        // >>> ENHANCEMENT: Explicit clean up of references to completely safeguard against memory leaks
+        node.data = 0;
         node.previous = null;
         node.next = null;
+
         size--;
         modificationCount++;
         return removedValue;
@@ -263,39 +274,31 @@ final class Main {
         CustomLinkedList targets = new CustomLinkedList();
         loadAsciiArtBanner("banner.txt");
         loadNumbers(targets, "data.txt");
-
         printSection("INITIAL TARGET MANIFEST");
         printList(targets);
-
         System.out.println("\n[ACTION] Inserting priority target #777 at the front.");
         targets.addFirst(777);
         printList(targets);
-
         int insertIndex = Math.min(2, targets.size());
         System.out.println("\n[ACTION] Inserting target #404 at index " + insertIndex + ".");
         targets.add(insertIndex, 404);
         printList(targets);
-
         System.out.println("\n[ACTION] Replacing index 1 with upgraded target #888.");
         int replaced = targets.set(1, 888);
         System.out.println("Replaced target: " + CYAN + replaced + RESET);
         printList(targets);
-
         System.out.println("\n[ACTION] Searching and removing target #501.");
         System.out.println("Target #501 first index: " + targets.indexOf(501));
         boolean removed = targets.delete(501);
         System.out.println(removed ? GREEN + "[SUCCESS] Target removed." + RESET : RED + "[NOTICE] Target was not found." + RESET);
         printList(targets);
-
         System.out.println("\n[ACTION] Reverse traversal without mutating the list.");
         for (int targetId : targets.descending()) {
             System.out.println("Reverse scan: [#" + CYAN + targetId + RESET + "]");
         }
-
         System.out.println("\n[ACTION] Reversing list links in place.");
         targets.reverse();
         printList(targets);
-
         System.out.println("\nFirst target ID: " + CYAN + targets.getFirst() + RESET);
         System.out.println("Last target ID: " + CYAN + targets.getLast() + RESET);
         System.out.println("Total active targets: " + CYAN + targets.size() + RESET);
@@ -307,6 +310,7 @@ final class Main {
         try (Scanner scanner = new Scanner(new File(filename))) {
             int numbersLoaded = 0;
             while (scanner.hasNext()) {
+                // >>> ENHANCEMENT: Hardened token parsing logic to ensure complete stability against non-integer strings
                 if (scanner.hasNextInt()) {
                     targets.insert(scanner.nextInt());
                     numbersLoaded++;

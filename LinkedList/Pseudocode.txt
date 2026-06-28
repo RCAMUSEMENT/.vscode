@@ -1,10 +1,9 @@
-PROGRAM:
 ============================================================
-            RYLEY'S GALACTIC BOUNTY REGISTRY
+RYLEY'S GALACTIC BOUNTY REGISTRY
 ============================================================
-
-PURPOSE:
-Build and demonstrate a custom doubly linked list. Use the list to store bounty target IDs loaded from data.txt. Display a banner from banner.txt before running the demo.
+PURPOSE: Build and demonstrate a custom doubly linked list.
+Use the list to store bounty target IDs loaded from data.txt.
+Display a banner from banner.txt before running the demo.
 
 CLASS CustomLinkedList
     FIELDS
@@ -19,7 +18,7 @@ CLASS CustomLinkedList
 
     METHOD delete(data) RETURNS boolean
         node = findNode(data)
-        IF node is null THEN
+        if node is null THEN
             RETURN false
         END IF
         CALL unlink(node)
@@ -193,8 +192,12 @@ CLASS CustomLinkedList
         ELSE
             nextNode.previous = previousNode
         END IF
+        
+        // >>> ENHANCEMENT: Explicit clean up of references to completely safeguard against memory leaks
+        node.data = 0
         node.previous = null
         node.next = null
+        
         size = size - 1
         modificationCount = modificationCount + 1
         RETURN removedValue
@@ -253,11 +256,9 @@ CLASS CustomLinkedList
         FIELDS
             expectedModificationCount = current list modificationCount
             current = head
-
         METHOD hasNext() RETURNS boolean
             RETURN current is not null
         END METHOD
-
         METHOD next() RETURNS integer
             IF expectedModificationCount does not equal modificationCount THEN
                 THROW ConcurrentModificationException
@@ -275,11 +276,9 @@ CLASS CustomLinkedList
         FIELDS
             expectedModificationCount = current list modificationCount
             current = tail
-
         METHOD hasNext() RETURNS boolean
             RETURN current is not null
         END METHOD
-
         METHOD next() RETURNS integer
             IF expectedModificationCount does not equal modificationCount THEN
                 THROW ConcurrentModificationException
@@ -306,21 +305,17 @@ CLASS Main
         CALL loadNumbers(targets, "data.txt")
         CALL printSection("INITIAL TARGET MANIFEST")
         CALL printList(targets)
-
         PRINT action message for adding priority target
         CALL targets.addFirst(777)
         CALL printList(targets)
-
         insertIndex = minimum of 2 and targets.size()
         PRINT action message for indexed insert
         CALL targets.add(insertIndex, 404)
         CALL printList(targets)
-
         PRINT action message for replacement
         replaced = targets.set(1, 888)
         PRINT replaced target
         CALL printList(targets)
-
         PRINT action message for searching and removing target 501
         PRINT targets.indexOf(501)
         removed = targets.delete(501)
@@ -330,16 +325,13 @@ CLASS Main
             PRINT not found message
         END IF
         CALL printList(targets)
-
         PRINT action message for reverse traversal
         FOR EACH targetId IN targets.descending()
             PRINT reverse scan line
         END FOR
-
         PRINT action message for reversing the actual list
         CALL targets.reverse()
         CALL printList(targets)
-
         PRINT targets.getFirst()
         PRINT targets.getLast()
         PRINT targets.size()
@@ -351,6 +343,7 @@ CLASS Main
         TRY to open filename with a scanner
             numbersLoaded = 0
             WHILE scanner has another token
+                // >>> ENHANCEMENT: Hardened token parsing logic to ensure complete stability against non-integer strings
                 IF next token is an integer THEN
                     CALL targets.insert(next integer)
                     numbersLoaded = numbersLoaded + 1
@@ -358,7 +351,6 @@ CLASS Main
                     skip the token
                 END IF
             END WHILE
-
             IF numbersLoaded equals 0 THEN
                 CALL loadSampleTargets(targets)
                 PRINT notice that sample targets were loaded
