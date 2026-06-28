@@ -5,11 +5,11 @@
  * Date: 2026-06-14
  * Program: ActionFigure.java
  * Description: This class defines the ActionFigure data structure, which includes a SKU code for sorting and a figure name for display.
- * It serves as the basic unit of inventory in our warehouse logistics system, allowing us to manage 
+ * It serves as the basic unit of inventory in our warehouse logistics system, allowing us to manage
  * and sort our action figure stock effectively using the Radix Sort algorithm implemented in RadixFigureSorter.java.
- * The ActionFigure class is designed to be immutable, ensuring that once an instance is created, its state cannot be altered. 
- * This immutability is crucial for maintaining data integrity during sorting operations and prevents accidental modifications to 
- * the inventory data.   
+ * The ActionFigure class is designed to be immutable, ensuring that once an instance is created, its state cannot be altered.
+ * This immutability is crucial for maintaining data integrity during sorting operations and prevents accidental modifications to
+ * the inventory data.
  */
 
 package ActionFigures;
@@ -33,6 +33,6 @@ public class ActionFigure {
 
     @Override
     public String toString() {
-        return String.format("[%s: %s]", skuCode, figureName); // Format the string to show both SKU and figure name for better readability in outputs
+        return String.format("[%s: %s]", skuCode, figureName); // Format the string to show both SKU and figure name for better readability in outputs 
     }
 }
